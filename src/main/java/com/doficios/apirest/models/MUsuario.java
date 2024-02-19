@@ -13,6 +13,15 @@ public class MUsuario {
     private String telefono;
     private String nombre;
     private String password;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Column(name = "tipo_usuario")
     private char tipoUsuario;
 
