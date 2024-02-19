@@ -13,6 +13,7 @@ public class MUsuario {
     private String telefono;
     private String nombre;
     private String password;
+    private String fotoPerfil;
 
     public Long getId() {
         return id;
@@ -63,5 +64,13 @@ public class MUsuario {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getFotoPerfil() {
+        return fotoPerfil;
+    }
+
+    public void setFotoPerfil(String fotoPerfil) {
+        this.fotoPerfil = fotoPerfil;
     }
 }
