@@ -1,10 +1,10 @@
-package com.doficios.apirest.models;
+package com.doficios.apirest.Usuario;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name="usuarios")
-public class MUsuario {
+public class UsuarioModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
