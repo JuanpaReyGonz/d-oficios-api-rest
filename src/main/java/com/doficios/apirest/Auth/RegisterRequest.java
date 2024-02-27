@@ -1,5 +1,6 @@
 package com.doficios.apirest.Auth;
 
+import com.doficios.apirest.User.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterRequest {
-    String username;
+    //String username;
+    String correo;
     String password;
-    String firstname;
-    String lastname;
-    String country;
+    //String firstname;
+    String nombre;
+    //String lastname;
+    String telefono;
+    //String country;
+    Role tipoUsuario;
+
 }

@@ -21,8 +21,10 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse login(LoginRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        UserDetails user=userRepository.findByUsername(request.getUsername()).orElseThrow();
+        //authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getCorreo(), request.getPassword()));
+        //UserDetails user=userRepository.findByUsername(request.getUsername()).orElseThrow();
+        UserDetails user=userRepository.findByCorreo(request.getCorreo()).orElseThrow();
         String token=jwtService.getToken(user);
         return AuthResponse.builder()
                 .token(token)
@@ -32,12 +34,16 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest request) {
         User user = User.builder()
-                .username(request.getUsername())
+                //.username(request.getUsername())
+                .correo(request.getCorreo())
                 .password(passwordEncoder.encode( request.getPassword()))
-                .firstname(request.getFirstname())
-                .lastname(request.lastname)
-                .country(request.getCountry())
-                .role(Role.C)
+                //.firstname(request.getFirstname())
+                .nombre(request.getNombre())
+                //.lastname(request.lastname)
+                .telefono(request.getTelefono())
+                //.country(request.getCountry())
+                //.role(Role.C) //Revisar y cambiar por libre.
+                .tipoUsuario(request.getTipoUsuario())
                 .build();
 
         userRepository.save(user);

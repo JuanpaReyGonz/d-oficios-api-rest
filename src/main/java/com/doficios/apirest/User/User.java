@@ -17,26 +17,39 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="user", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
+//@Table(name="user", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
+@Table(name="usuarios", uniqueConstraints = {@UniqueConstraint(columnNames = {"correo","telefono"})})
 public class User implements UserDetails {
     @Id
-    @GeneratedValue
-    Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false)
+    //Integer id;
+    Long id_usuario;
     @Basic
-    @Column(nullable = false)
-    String username;
-    @Column(nullable = false)
-    String lastname;
-    String firstname;
-    String country;
+    @Column(nullable = false, unique = true)
+    //String username;
+    String correo;
+    @Column(nullable = false, unique = true)
+    //String lastname;
+    String telefono;
+    //String firstname;
+    String nombre;
+    //String country;
     String password;
+    @Column(name="tipo_usuario")
     @Enumerated(EnumType.STRING)
-    Role role;
+    Role tipoUsuario;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority((role.name())));
+        return List.of(new SimpleGrantedAuthority((tipoUsuario.name())));
     }
+
+    @Override
+    public String getUsername() {
+        return correo; //No se porqué es de ahuevo este metodo.
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
