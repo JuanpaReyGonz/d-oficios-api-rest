@@ -1,7 +1,6 @@
 package com.doficios.apirest.Auth;
 
 import com.doficios.apirest.Jwt.JwtService;
-import com.doficios.apirest.User.Role;
 import com.doficios.apirest.User.User;
 import com.doficios.apirest.User.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
@@ -26,12 +24,14 @@ public class AuthService {
         //authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getCorreo(), request.getPassword()));
         //UserDetails user=userRepository.findByUsername(request.getUsername()).orElseThrow();
-        UserDetails user=userRepository.findByCorreo(request.getCorreo()).orElseThrow();
+        User user=userRepository.findByCorreo(request.getCorreo()).orElseThrow();
         String token=jwtService.getToken(user);
         return AuthResponse.builder()
+                .nombre(user.getNombre())
+                .correo(user.getUsername())
+                .tipoUsuario(user.getTipoUsuario())
                 .token(token)
                 .build();
-
     }
 
     public AuthResponse register(RegisterRequest request) {
@@ -51,6 +51,9 @@ public class AuthService {
         userRepository.save(user);
 
         return AuthResponse.builder()
+                .nombre(user.getNombre())
+                .correo(user.getUsername())
+                .tipoUsuario(user.getTipoUsuario())
                 .token(jwtService.getToken(user))
                 .build();
 
