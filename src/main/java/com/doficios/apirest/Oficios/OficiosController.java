@@ -1,6 +1,7 @@
 package com.doficios.apirest.Oficios;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,10 +13,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/oficios")
-@RequiredArgsConstructor
 public class OficiosController {
-    private TipoServicioRepository tipoServicioRepository;
-    private SubServiciosRepository subServiciosRepository;
+   @Autowired
+   OficiosService sOficios;
 
     /*@GetMapping
     public List<?> obtenerOficios(TipoServicioModel tipoServicioModel, SubServiciosModel subServiciosModel){
@@ -25,4 +25,10 @@ public class OficiosController {
     /*public ArrayList<?> obtenerOficios(){
         return  ResponseEntity.ok(tipoServicioRepository.findAll());
     }*/
+
+    @GetMapping()
+    public ArrayList<TipoServicioModel> obtenerServicios(){
+        return ResponseEntity.ok(sOficios.getAll()).getBody();
+    }
+
 }

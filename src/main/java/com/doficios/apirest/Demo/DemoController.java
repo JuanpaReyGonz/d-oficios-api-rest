@@ -1,8 +1,13 @@
 package com.doficios.apirest.Demo;
 
+import com.doficios.apirest.Jwt.JwtAuthenticationFilter;
+import com.doficios.apirest.Jwt.JwtService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,8 +56,15 @@ public class DemoController {
     }
 
     @PostMapping(value = "demo")
-    public String welcome()
-    {
-        return "Welcome from secure endpoint";
+    public String welcome(HttpServletRequest request) {
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = null;
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+        JwtService jwtService = new JwtService();
+        jwtService.getUsernameFromToken(token);
+
+        return jwtService.getUsernameFromToken(token);
     }
 }
