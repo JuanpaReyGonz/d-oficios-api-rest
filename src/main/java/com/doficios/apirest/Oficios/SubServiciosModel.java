@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "subservicios")
 public class SubServiciosModel {
+    @ManyToOne
+    @JoinColumn(name="id_tiposervicio")
+    private TipoServicioModel tiposServicio;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
@@ -20,8 +23,4 @@ public class SubServiciosModel {
 
     @Column(nullable = false)
     String descripcion;
-
-    @ManyToOne
-    @JoinColumn(name="id_tiposervicio")
-    private TipoServicioModel tiposServicio;
 }
