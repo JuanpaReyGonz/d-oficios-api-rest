@@ -10,13 +10,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-//@Entity
+@Entity
 @Table(name = "precios")
 public class PreciosModel {
+    @Id
     @ManyToOne
     @JoinColumn(name="id_tiposervicio")
     private TipoServicioModel tipoServicioModel;
-
+    @Id
     @ManyToOne
     @JoinColumn(name="id_subservicio")
     private SubServiciosModel subServiciosModel;
