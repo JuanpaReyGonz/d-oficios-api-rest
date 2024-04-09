@@ -17,6 +17,9 @@ public class OficiosController {
    @Autowired
    OficiosService sOficios;
 
+   @Autowired
+   SubServicioService subServicioService;
+
     /*@GetMapping
     public List<?> obtenerOficios(TipoServicioModel tipoServicioModel, SubServiciosModel subServiciosModel){
         List<Categoria> listaOficios = tipoServicioRepository.findAll();
@@ -29,6 +32,11 @@ public class OficiosController {
     @GetMapping()
     public ArrayList<TipoServicioModel> obtenerServicios(){
         return ResponseEntity.ok(sOficios.getAll()).getBody();
+    }
+
+    @GetMapping("/otro")
+    public ArrayList<SubServiciosModel> obtenerSubservicios(){
+        return ResponseEntity.ok(subServicioService.getAll()).getBody();
     }
 
 }

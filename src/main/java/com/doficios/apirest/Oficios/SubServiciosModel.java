@@ -21,6 +21,6 @@ public class SubServiciosModel {
     @Column(unique = true, nullable = false)
     private Integer id_subservicio;
 
-    @Column(nullable = false)
-    String descripcion;
+    @Column(nullable = false, name = "descripcion")
+    String descripcion_subservicios;
 }

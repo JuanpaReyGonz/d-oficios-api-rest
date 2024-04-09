@@ -7,14 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 
 @Service
-public class OficiosService {
+public class SubServicioService {
     @Autowired
-    TipoServicioRepository tipoServicioRepo;
+    SubServiciosRepository subServiciosRepo;
 
     @Transactional(readOnly = true)
-    public ArrayList<TipoServicioModel> getAll() {
-        return (ArrayList<TipoServicioModel>) tipoServicioRepo.findAll();
+    public ArrayList<SubServiciosModel> getAll() {
+        return (ArrayList<SubServiciosModel>) subServiciosRepo.findAll();
     }
-
-
 }

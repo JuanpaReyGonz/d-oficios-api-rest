@@ -1,6 +1,5 @@
 package com.doficios.apirest.Oficios;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,25 +9,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-//@Entity
-@Table(name = "precios")
-public class PreciosModel {
-    @ManyToOne
-    @JoinColumn(name="id_tiposervicio")
-    private TipoServicioModel tipoServicioModel;
-
-    @ManyToOne
-    @JoinColumn(name="id_subservicio")
-    private SubServiciosModel subServiciosModel;
-
+public class ServiciosDisponiblesDTO {
+    private Integer id_tiposervicio;
+    private String descripcion;
+    private Integer id_subservicio;
+    private String descripcion_subservicios;
     private double minimo;
-
     private double maximo;
-
     private String unidad;
-
     private int duracion_min;
-
     private int iva;
-
 }
