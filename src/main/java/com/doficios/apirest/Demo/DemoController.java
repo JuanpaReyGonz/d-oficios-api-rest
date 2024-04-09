@@ -55,6 +55,41 @@ public class DemoController {
         return modelServicios;
     }
 
+    @GetMapping(value = "dummy_detalle")
+    public List<DemoDetalleServiciosModel> obtenerDetalleServicio(){
+        logger.info("TOKEN VALIDO. Se está consumiendo el endpoint: http://localhost:8080/api/v1/dummy_detalle");
+
+        //Declaración de lista secundaria para detalle de subservicios e importes por subservicios.
+        List<DemoDetalleSubserviciosModel> demoDetalle = new ArrayList<>();
+        demoDetalle.add(new DemoDetalleSubserviciosModel("Instalación de sanitario", 550.50));
+        demoDetalle.add(new DemoDetalleSubserviciosModel("Instalación de llave para lavabo", 320.60));
+        //Declaración de lista secundaria para histórico de estatus.
+        List<DemoDetalleEstadosModel> demoEstadosList = new ArrayList<>();
+        demoEstadosList.add(new DemoDetalleEstadosModel(1,"Asignando trabajador a tu solicitud de servicio","23-03-2024 15:30"));
+        demoEstadosList.add(new DemoDetalleEstadosModel(2,"Solicitud confirmada por trabajador","24-03-2024 10:00"));
+        demoEstadosList.add(new DemoDetalleEstadosModel(3,"Validando datos con el cliente","25-03-2024 08:00"));
+        demoEstadosList.add(new DemoDetalleEstadosModel(4,"En espera de pago","26-03-2024 16:30"));
+
+        //Lista del JSON GENERAL QUE SE MANDA
+        List<DemoDetalleServiciosModel> modelServicios = new ArrayList<>();
+        //Declarando detalle de servicio con Listas
+        modelServicios.add(
+                new DemoDetalleServiciosModel(
+                        1002,
+                        "Fontanería",
+                        5,
+                        "Validando pago",
+                        "27-03-2024 10:00",
+                        871.10,
+                        "Reyes|González|Juan Pablo",
+                        4.5,
+                        4.3,
+                        demoDetalle,
+                        demoEstadosList
+                ));
+        return modelServicios;
+    }
+
     @PostMapping(value = "demo")
     public String welcome(HttpServletRequest request) {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
