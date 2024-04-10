@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -20,4 +22,7 @@ public class TipoServicioModel {
 
     @Column(nullable = false, unique = true)
     String descripcion;
+
+    @OneToMany(mappedBy = "tiposServicio", cascade = CascadeType.ALL)
+    private List<SubServiciosModel> subservicios;
 }

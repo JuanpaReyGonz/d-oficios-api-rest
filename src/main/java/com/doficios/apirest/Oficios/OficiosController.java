@@ -1,6 +1,8 @@
 package com.doficios.apirest.Oficios;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,29 +16,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/oficios")
 public class OficiosController {
+    private static final Logger logger = LoggerFactory.getLogger(OficiosController.class);
    @Autowired
    OficiosService sOficios;
-
-   @Autowired
-   SubServicioService subServicioService;
-
-    /*@GetMapping
-    public List<?> obtenerOficios(TipoServicioModel tipoServicioModel, SubServiciosModel subServiciosModel){
-        List<Categoria> listaOficios = tipoServicioRepository.findAll();
-        subServiciosModel.getDescripcion();
-    }*/
-    /*public ArrayList<?> obtenerOficios(){
-        return  ResponseEntity.ok(tipoServicioRepository.findAll());
-    }*/
-
-    @GetMapping()
-    public ArrayList<TipoServicioModel> obtenerServicios(){
-        return ResponseEntity.ok(sOficios.getAll()).getBody();
-    }
-
-    @GetMapping("/otro")
-    public ArrayList<SubServiciosModel> obtenerSubservicios(){
-        return ResponseEntity.ok(subServicioService.getAll()).getBody();
+    @GetMapping("/listar")
+    public List<ServiciosDisponiblesDTO> obtenerServiciosDisponibles() {
+        logger.info("TOKEN VALIDO. Se está consumiendo el endpoint: http://localhost:8080/oficios/listar. Válido para cualquier usuario, no se revisa su rol.");
+        return sOficios.obtenerServiciosConSubservicios();
     }
 
 }
