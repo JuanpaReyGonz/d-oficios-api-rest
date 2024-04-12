@@ -1,5 +1,10 @@
 package com.doficios.apirest.Servicios;
 
+import com.doficios.apirest.Oficios.TipoServicioModel;
+import com.doficios.apirest.Usuario.UsuarioModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,31 +24,33 @@ public class ServiciosModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     Long id_servicio;
+    //name es de la tabla Servicios y id_usuario de la tabla Usuarios
+    //JsonIgnoreProperties para evitar que se manden campos que no requerimos mapear y puedan ser sensibles o truenen la aplicación.
+    @ManyToOne
+    @JoinColumn(name="cliente", referencedColumnName = "id_usuario")
+    @JsonIgnoreProperties({"id","correo","telefono","password","tipoUsuario","fotoPerfil"})
+    private UsuarioModel usuarioModel;
 
-    Long cliente;
-
-    Long status;
-
-    LocalDateTime fecha_solicitud;
-
+    @ManyToOne
+    @JoinColumn(name="status")
+    @JsonIgnoreProperties({"status"})
+    private StatusDeServicioModel statusModel;
+    //Queda mejor mapear las fechas como String que como LocalDateTime, porque sino devuelve una T entre fecha y hora.
+    String fecha_solicitud;
     LocalDateTime fecha_servicio;
-
     LocalDateTime hora_servicio;
-
     double importe;
+    Double comision;
+    //double es un valor primitivo de Java y no se puede devolver un null si en la BD está mapeado así. Double si lo hace.
+    Double importe_original;
 
-    double comision;
-
-    double importe_original;
-
-    int tipo_servicio;
-
+    //tipo_servicio es columna de la tabla Servicios y id_tiposervicio de la tabla tipos_servicio
+    @ManyToOne
+    @JoinColumn(name="tipo_servicio", referencedColumnName = "id_tiposervicio")
+    @JsonIgnoreProperties({"id_tiposervicio","subservicios"})
+    private TipoServicioModel tipoServicioModel;
     int entidad;
-
     int municipio;
-
     int localidad;
-
     String domicilio;
-
 }

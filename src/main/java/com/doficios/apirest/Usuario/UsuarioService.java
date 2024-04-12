@@ -15,6 +15,7 @@ public class UsuarioService {
         return usuarioRepo.save(usuario);
     }
 
+    //La nomenclatura @Transactional(readOnly = true) indica que el método será ejecutado en un contexto transaccional, pero se configura como solo lectura.
     @Transactional(readOnly = true)
     public ArrayList<UsuarioModel> obtenerUsuarios() {
         return (ArrayList<UsuarioModel>) usuarioRepo.findAll();
