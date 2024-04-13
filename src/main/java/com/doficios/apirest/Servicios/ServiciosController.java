@@ -1,10 +1,13 @@
 package com.doficios.apirest.Servicios;
 
+import com.doficios.apirest.Jwt.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,8 +26,15 @@ public class ServiciosController {
 
     @GetMapping("/listado/cliente")
     public ResponseEntity<List<TarjetasSolicitudesClienteDTO>> obtenerTarjetasSolicitudesCliente(HttpServletRequest request) {
-        logger.info("TOKEN VALIDO. Se valida usuario que hace la petición. Se está consumiendo el endpoint: http://localhost:8080/servicios/listado/cliente");
-        List<TarjetasSolicitudesClienteDTO> tarjetasDTO = sServicios.obtenerTarjetasSolicitudesCliente();
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = null;
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+        JwtService jwtService = new JwtService();
+        String username = jwtService.getUsernameFromToken(token);
+        logger.info("TOKEN VALIDO. El usuario: "+username+" está consumiendo el endpoint: http://localhost:8080/servicios/listado/cliente");
+        List<TarjetasSolicitudesClienteDTO> tarjetasDTO = sServicios.obtenerTarjetasSolicitudesCliente(username);
         return ResponseEntity.ok(tarjetasDTO);
     }
 

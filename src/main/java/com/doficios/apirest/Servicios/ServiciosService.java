@@ -19,10 +19,11 @@ public class ServiciosService {
         return (ArrayList<ServiciosModel>) serviciosRepo.findAll();
     }*/
 
-    public List<TarjetasSolicitudesClienteDTO> obtenerTarjetasSolicitudesCliente() {
+    public List<TarjetasSolicitudesClienteDTO> obtenerTarjetasSolicitudesCliente(String username) {
         DecimalFormat df = new DecimalFormat("0.00"); //Formatear importe siempre a 2 decimales.
 
-        List<ServiciosModel> servicios = serviciosRepo.findAll();
+       //List<ServiciosModel> servicios = serviciosRepo.findAll();
+        List<ServiciosModel> servicios = serviciosRepo.findByUsuarioModelCorreo(username);
         List<TarjetasSolicitudesClienteDTO> tarjetasDTO = new ArrayList<>();
         for (ServiciosModel servicio : servicios) {
             TarjetasSolicitudesClienteDTO dto = new TarjetasSolicitudesClienteDTO();
