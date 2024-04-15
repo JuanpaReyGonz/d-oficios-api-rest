@@ -2,8 +2,9 @@ package com.doficios.apirest.Oficios;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class OficiosService {
@@ -11,52 +12,50 @@ public class OficiosService {
     TipoServicioRepository tipoServicioRepo;
     @Autowired
     PreciosRepository preciosRepo;
+    @Autowired
+    SubServiciosRepository subServiciosRepo;
 
-    public List<ServiciosDisponiblesDTO> obtenerServiciosConSubservicios() {
-        List<TipoServicioModel> tipoServicios = tipoServicioRepo.findAll();
-        return tipoServicios.stream()
-                .map(this::mapToServiciosDisponiblesDTO)
-                .collect(Collectors.toList());
-    }
+    public List<ServiciosDisponiblesDTO> obtenerServiciosDisponibles() {
+        List<TipoServicioModel> tiposServicio = tipoServicioRepo.findAll();
+        List<ServiciosDisponiblesDTO> serviciosDisponiblesDTOList = new ArrayList<>();
 
-    private ServiciosDisponiblesDTO mapToServiciosDisponiblesDTO(TipoServicioModel tipoServicio) {
-        ServiciosDisponiblesDTO dto = new ServiciosDisponiblesDTO();
-        dto.setId_tiposervicio(tipoServicio.getId_tiposervicio());
-        dto.setDescripcion(tipoServicio.getDescripcion());
-        dto.setSubservicios(
-                tipoServicio.getSubservicios().stream()
-                        //.map(this::mapToSubServiciosDisponiblesDTO)
-                        // Se cambia a expresión lambda, pues solo requiere del primer parámetro, no del segundo.
-                        .map(subservicio -> mapToSubServiciosDisponiblesDTO(tipoServicio, subservicio))
-                        .collect(Collectors.toList())
-        );
-        return dto;
-    }
-    private SubServiciosDisponiblesDTO mapToSubServiciosDisponiblesDTO(TipoServicioModel tipoServicio, SubServiciosModel subservicio) {
-        SubServiciosDisponiblesDTO dto = new SubServiciosDisponiblesDTO();
-        dto.setId_subservicio(subservicio.getId_subservicio());
-        dto.setDescripcion_subservicios(subservicio.getDescripcion_subservicios());
+        for (TipoServicioModel tipoServicio : tiposServicio) {
 
-        PreciosModel preciosModel = preciosRepo.findByTipoServicioModelAndSubServiciosModel(tipoServicio, subservicio);
-        if (preciosModel != null) {
-            double minimo = preciosModel.getMinimo();
-            double maximo = preciosModel.getMaximo();
-            String unidad = preciosModel.getUnidad();
-            int duracion_min = preciosModel.getDuracion_min();
-            int iva = preciosModel.getIva();
-            dto.setMinimo(minimo);
-            dto.setMaximo(maximo);
-            dto.setUnidad(unidad);
-            dto.setDuracion_min(duracion_min);
-            dto.setIva(iva);
+            List<SubServiciosModel> subServicios = tipoServicio.getSubservicios();
+            List<SubServiciosDisponiblesDTO> subServiciosDisponiblesDTOList = new ArrayList<>();
+
+            for (SubServiciosModel subServicio : subServicios) {
+                //System.out.println("TipoServicio:"+tipoServicio.getId_tiposervicio()+" Subservicio:"+subServicio.getIdSubservicio());
+
+                // Aquí obtenemos el precio para el sub-servicio actual y el tipo de servicio actual
+                PreciosModel precio = preciosRepo.findByTipoServicioModelAndSubServiciosModel(
+                        tipoServicio, subServicio
+                );
+
+                String descripcionSubServicio = subServiciosRepo.findDescripcionSubservicioByTipoAndId(tipoServicio.getId_tiposervicio(),subServicio.getIdSubservicio());
+                //System.out.println("Descripcion:" +descripcionSubServicio);
+
+                SubServiciosDisponiblesDTO subServicioDTO = SubServiciosDisponiblesDTO.builder()
+                        .id_subservicio(subServicio.getIdSubservicio())
+                        .descripcion_subservicios(descripcionSubServicio)
+                        .minimo(precio.getMinimo())
+                        .maximo(precio.getMaximo())
+                        .unidad(precio.getUnidad())
+                        .duracion_min(precio.getDuracion_min())
+                        .iva(precio.getIva())
+                        .build();
+                subServiciosDisponiblesDTOList.add(subServicioDTO);
+            }
+
+            // Construir el DTO de servicios disponibles y agregarlo a la lista
+            ServiciosDisponiblesDTO serviciosDisponiblesDTO = ServiciosDisponiblesDTO.builder()
+                    .id_tiposervicio(tipoServicio.getId_tiposervicio())
+                    .descripcion(tipoServicio.getDescripcion())
+                    .subservicios(subServiciosDisponiblesDTOList)
+                    .build();
+            serviciosDisponiblesDTOList.add(serviciosDisponiblesDTO);
         }
-        else {
-            dto.setMinimo(0.0);
-            dto.setMaximo(0.0);
-            dto.setUnidad(null);
-            dto.setDuracion_min(0);
-            dto.setIva(0);
-        }
-        return dto;
+
+        return serviciosDisponiblesDTOList;
     }
 }
