@@ -31,20 +31,32 @@ public class OficiosService {
                 PreciosModel precio = preciosRepo.findByTipoServicioModelAndSubServiciosModel(
                         tipoServicio, subServicio
                 );
+                if (precio != null){
+                    String descripcionSubServicio = subServiciosRepo.findDescripcionSubservicioByTipoAndId(tipoServicio.getId_tiposervicio(),subServicio.getIdSubservicio());
+                    //System.out.println("Descripcion:" +descripcionSubServicio);
 
-                String descripcionSubServicio = subServiciosRepo.findDescripcionSubservicioByTipoAndId(tipoServicio.getId_tiposervicio(),subServicio.getIdSubservicio());
-                //System.out.println("Descripcion:" +descripcionSubServicio);
-
-                SubServiciosDisponiblesDTO subServicioDTO = SubServiciosDisponiblesDTO.builder()
-                        .id_subservicio(subServicio.getIdSubservicio())
-                        .descripcion_subservicios(descripcionSubServicio)
-                        .minimo(precio.getMinimo())
-                        .maximo(precio.getMaximo())
-                        .unidad(precio.getUnidad())
-                        .duracion_min(precio.getDuracion_min())
-                        .iva(precio.getIva())
-                        .build();
-                subServiciosDisponiblesDTOList.add(subServicioDTO);
+                    SubServiciosDisponiblesDTO subServicioDTO = SubServiciosDisponiblesDTO.builder()
+                            .id_subservicio(subServicio.getIdSubservicio())
+                            .descripcion_subservicios(descripcionSubServicio)
+                            .minimo(precio.getMinimo())
+                            .maximo(precio.getMaximo())
+                            .unidad(precio.getUnidad())
+                            .duracion_min(precio.getDuracion_min())
+                            .iva(precio.getIva())
+                            .build();
+                    subServiciosDisponiblesDTOList.add(subServicioDTO);
+                } else {
+                    SubServiciosDisponiblesDTO subServicioDTO = SubServiciosDisponiblesDTO.builder()
+                             .id_subservicio(subServicio.getIdSubservicio())
+                             .descripcion_subservicios("Descripción no disponible")
+                             .minimo(0.0)
+                             .maximo(0.0)
+                             .unidad("null")
+                             .duracion_min(0)
+                             .iva(0)
+                             .build();
+                     subServiciosDisponiblesDTOList.add(subServicioDTO);
+                }
             }
 
             // Construir el DTO de servicios disponibles y agregarlo a la lista
