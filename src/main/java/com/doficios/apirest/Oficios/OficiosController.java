@@ -1,5 +1,6 @@
 package com.doficios.apirest.Oficios;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,6 @@ public class OficiosController {
     @GetMapping("/listar")
     public List<ServiciosDisponiblesDTO> obtenerServiciosDisponibles() {
         logger.info("TOKEN VALIDO. Se está consumiendo el endpoint: http://localhost:8080/oficios/listar. Válido para cualquier usuario, no se revisa su rol.");
-        return sOficios.obtenerServiciosConSubservicios();
+        return sOficios.obtenerServiciosDisponibles();
     }
-
 }

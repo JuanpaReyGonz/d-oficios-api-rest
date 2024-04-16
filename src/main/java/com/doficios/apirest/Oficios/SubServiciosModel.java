@@ -18,8 +18,8 @@ public class SubServiciosModel {
     private TipoServicioModel tiposServicio;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false)
-    private Integer id_subservicio;
+    @Column(name = "id_subservicio",unique = true, nullable = false)
+    private Integer idSubservicio;
 
     @Column(nullable = false, name = "descripcion")
     String descripcion_subservicios;
