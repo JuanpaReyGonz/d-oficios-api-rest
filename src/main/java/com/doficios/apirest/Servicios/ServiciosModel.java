@@ -32,6 +32,11 @@ public class ServiciosModel {
     private UsuarioModel usuarioModel;
 
     @ManyToOne
+    @JoinColumn(name="trabajador", referencedColumnName = "id_usuario")
+    @JsonIgnoreProperties({"id","correo","telefono","password","tipoUsuario","fotoPerfil"})
+    private UsuarioModel usuarioModelTrabajador;
+
+    @ManyToOne
     @JoinColumn(name="status")
     @JsonIgnoreProperties({"status"})
     private StatusDeServicioModel statusModel;

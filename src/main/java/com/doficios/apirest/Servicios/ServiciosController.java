@@ -38,4 +38,10 @@ public class ServiciosController {
         return ResponseEntity.ok(tarjetasDTO);
     }
 
+    @GetMapping()
+    public ArrayList<TareasPorServicioModel> obtenerTareas(){
+        logger.info("Obteniendo las tareas de servicio1");
+        return ResponseEntity.ok(sServicios.obtenerTareasPorServicio(1)).getBody();
+    }
+
 }

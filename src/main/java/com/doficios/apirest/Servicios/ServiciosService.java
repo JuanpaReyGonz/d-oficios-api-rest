@@ -13,6 +13,8 @@ import java.util.List;
 public class ServiciosService {
     @Autowired
     ServiciosRepository serviciosRepo;
+    @Autowired
+    TareasPorServicioRepository tareasRepo;
 
     /*@Transactional(readOnly = true)
     public ArrayList<ServiciosModel> obtenerServicios() {
@@ -38,5 +40,9 @@ public class ServiciosService {
         return tarjetasDTO;
     }
 
+    @Transactional(readOnly = true)
+    public ArrayList<TareasPorServicioModel> obtenerTareasPorServicio(Integer servicio) {
+        return (ArrayList<TareasPorServicioModel>) tareasRepo.findByIdServicio(servicio);
+    }
 
 }
