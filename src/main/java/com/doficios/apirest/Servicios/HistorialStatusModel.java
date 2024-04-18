@@ -1,9 +1,8 @@
 package com.doficios.apirest.Servicios;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.doficios.apirest.Models.CalificacionesId;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name="historial_status")
+@IdClass(HistorialStatusId.class)
 public class HistorialStatusModel {
     @Id
     @Column(name = "id_servicio", nullable = false)
@@ -24,9 +24,12 @@ public class HistorialStatusModel {
     @Column(name = "id_usuario", nullable = false)
     Integer idUsuario;
 
-    @Id
-    @Column(name="status", nullable = false)
-    Integer Status;
+
+    @ManyToOne
+    @JoinColumn(name="status")
+    @JsonIgnoreProperties({"status"})
+    private StatusDeServicioModel statusModel;
+    //Integer Status;
 
     String fecha;
 }

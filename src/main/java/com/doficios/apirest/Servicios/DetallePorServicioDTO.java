@@ -19,12 +19,13 @@ public class DetallePorServicioDTO {
     private int num_status;
     private String status;
     private String fecha_solicitud;
-    private double importe;
+    private double total;
+    private double comision;
     //Hasta aquí, se saca de TarjetasSolicitudesClienteDTO.
     //TarjetasSolicitudesClienteDTO tarjetasSolicitudesClienteDTO;
     private String nombre_trabajador; //Sale de serviciosModel.
     private double promedio_estrellas;
     private int total_calificaciones;
-    List<TareasPorServicioModel> subservicios_lista;
-    List<DemoDetalleEstadosModel> estados_historico;
+    List<SubServiciosListaDTO> subservicios_lista;
+    List<StatusHistoricoDTO> status_historico;
 }

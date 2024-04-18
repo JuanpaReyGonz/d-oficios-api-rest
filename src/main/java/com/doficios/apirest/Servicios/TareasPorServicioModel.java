@@ -33,12 +33,7 @@ public class TareasPorServicioModel implements Serializable {
     @JsonIgnoreProperties({"status"})
     private StatusDeTareaModel statusTarea;
     //Integer status;
-
-    /*@ManyToOne
-    @JoinColumn(name="sub_servicio" ,referencedColumnName="id_subservicio")
-    @JsonIgnoreProperties({"id_tiposervicio"})
-    private SubServiciosModel subServiciosModel;*/
     Integer sub_servicio;
     Integer unidad;
-
+    double total;
 }

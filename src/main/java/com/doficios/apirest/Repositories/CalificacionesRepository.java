@@ -1,4 +1,14 @@
 package com.doficios.apirest.Repositories;
 
-public class CalificacionesRepository {
+import com.doficios.apirest.Models.CalificacionesId;
+import com.doficios.apirest.Models.CalificacionesModel;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+
+public interface CalificacionesRepository extends JpaRepository<CalificacionesModel, CalificacionesId> {
+    @Query("SELECT c FROM CalificacionesModel c WHERE c.id_usuario = :idUsuario")
+    List<CalificacionesModel> findById_usuario(Long idUsuario);
+
 }
