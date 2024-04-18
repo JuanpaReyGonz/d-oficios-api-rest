@@ -1,5 +1,6 @@
 package com.doficios.apirest.Servicios;
 
+import com.doficios.apirest.Oficios.SubServiciosModel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,10 @@ public class TareasPorServicioModel implements Serializable {
     private StatusDeTareaModel statusTarea;
     //Integer status;
 
+    /*@ManyToOne
+    @JoinColumn(name="sub_servicio" ,referencedColumnName="id_subservicio")
+    @JsonIgnoreProperties({"id_tiposervicio"})
+    private SubServiciosModel subServiciosModel;*/
     Integer sub_servicio;
     Integer unidad;
 
