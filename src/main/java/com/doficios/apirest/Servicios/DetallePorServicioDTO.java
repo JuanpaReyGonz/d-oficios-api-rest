@@ -13,15 +13,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DetallePorServicioDTO {
-    /*//De aquí:
-    private int id_servicio;
+    //De aquí:
+    private Long id_servicio;
     private String tipo_servicio;
     private int num_status;
     private String status;
     private String fecha_solicitud;
     private double importe;
-    //Hasta aquí, se saca de TarjetasSolicitudesClienteDTO.*/
-    TarjetasSolicitudesClienteDTO tarjetasSolicitudesClienteDTO;
+    //Hasta aquí, se saca de TarjetasSolicitudesClienteDTO.
+    //TarjetasSolicitudesClienteDTO tarjetasSolicitudesClienteDTO;
     private String nombre_trabajador; //Sale de serviciosModel.
     private double promedio_estrellas;
     private int total_calificaciones;

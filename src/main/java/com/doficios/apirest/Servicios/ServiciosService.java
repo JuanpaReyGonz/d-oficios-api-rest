@@ -16,11 +16,6 @@ public class ServiciosService {
     @Autowired
     TareasPorServicioRepository tareasRepo;
 
-    /*@Transactional(readOnly = true)
-    public ArrayList<ServiciosModel> obtenerServicios() {
-        return (ArrayList<ServiciosModel>) serviciosRepo.findAll();
-    }*/
-
     public List<TarjetasSolicitudesClienteDTO> obtenerTarjetasSolicitudesCliente(String username) {
         DecimalFormat df = new DecimalFormat("0.00"); //Formatear importe siempre a 2 decimales.
 
@@ -40,9 +35,35 @@ public class ServiciosService {
         return tarjetasDTO;
     }
 
+    /*@Transactional(readOnly = true)
+    public List<ServiciosModel> obtenerDetalleServicio(Integer idServicio) {
+        List<ServiciosModel> servicioGenerales = serviciosRepo.findById_servicio(idServicio);
+        List<TareasPorServicioModel> tareasServicio = tareasRepo.findByIdServicio(idServicio);
+
+        return servicioGenerales;
+
+    }*/
     @Transactional(readOnly = true)
-    public ArrayList<TareasPorServicioModel> obtenerTareasPorServicio(Integer servicio) {
-        return (ArrayList<TareasPorServicioModel>) tareasRepo.findByIdServicio(servicio);
+    public DetallePorServicioDTO obtenerDetalleServicio(Integer idServicio) {
+        ServiciosModel servicioGenerales = serviciosRepo.findById_servicio(idServicio);
+        List<TareasPorServicioModel> tareasServicio = tareasRepo.findByIdServicio(idServicio);
+
+
+
+
+        return DetallePorServicioDTO.builder()
+                .id_servicio(servicioGenerales.getId_servicio())
+                .tipo_servicio(servicioGenerales.getTipoServicioModel().getDescripcion())
+                .num_status(servicioGenerales.getStatusModel().getStatus())
+                .status(servicioGenerales.getStatusModel().getDescripcion())
+                .fecha_solicitud(servicioGenerales.getFecha_solicitud())
+                .importe(servicioGenerales.getImporte())
+                .nombre_trabajador(servicioGenerales.getUsuarioModelTrabajador().getNombre())
+                .promedio_estrellas(0.0)
+                .total_calificaciones(0)
+                .build();
+
     }
+
 
 }

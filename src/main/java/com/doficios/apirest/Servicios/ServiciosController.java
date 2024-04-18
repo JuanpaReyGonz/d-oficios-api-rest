@@ -39,9 +39,9 @@ public class ServiciosController {
     }
 
     @GetMapping()
-    public ArrayList<TareasPorServicioModel> obtenerTareas(){
+    public ResponseEntity<DetallePorServicioDTO> obtenerDetalle(){
         logger.info("Obteniendo las tareas de servicio1");
-        return ResponseEntity.ok(sServicios.obtenerTareasPorServicio(1)).getBody();
+        return ResponseEntity.ok(sServicios.obtenerDetalleServicio(1));
     }
 
 }
