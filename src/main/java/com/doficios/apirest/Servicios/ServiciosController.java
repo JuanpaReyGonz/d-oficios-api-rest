@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,15 +31,16 @@ public class ServiciosController {
         }
         JwtService jwtService = new JwtService();
         String username = jwtService.getUsernameFromToken(token);
-        logger.info("TOKEN VALIDO. El usuario: "+username+" está consumiendo el endpoint: http://localhost:8080/servicios/listado/cliente");
+        logger.info("TOKEN VALIDO. El usuario: "+username+" está consumiendo el endpoint: /servicios/listado/cliente");
         List<TarjetasSolicitudesClienteDTO> tarjetasDTO = sServicios.obtenerTarjetasSolicitudesCliente(username);
         return ResponseEntity.ok(tarjetasDTO);
     }
 
-    @GetMapping()
-    public ResponseEntity<DetallePorServicioDTO> obtenerDetalle(){
-        logger.info("Obteniendo las tareas de servicio1");
-        return ResponseEntity.ok(sServicios.obtenerDetalleServicio(1));
+    @PostMapping()
+    public ResponseEntity<DetallePorServicioDTO> obtenerDetalle(@RequestBody DetallePorServicioRequest request){
+        logger.info("Se está consumiendo el endpoint /servicios");
+        logger.info("Obteniendo las tareas del servicio: "+request.getId_servicio());
+        return ResponseEntity.ok(sServicios.obtenerDetalleServicio(request.getId_servicio()));
     }
 
 }

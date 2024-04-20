@@ -24,7 +24,7 @@ public class HistorialStatusModel {
     @Column(name = "id_usuario", nullable = false)
     Integer idUsuario;
 
-
+    @Id
     @ManyToOne
     @JoinColumn(name="status")
     @JsonIgnoreProperties({"status"})

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -19,8 +20,8 @@ public class DetallePorServicioDTO {
     private int num_status;
     private String status;
     private String fecha_solicitud;
-    private double total;
-    private double comision;
+    private BigDecimal total;
+    private BigDecimal comision;
     //Hasta aquí, se saca de TarjetasSolicitudesClienteDTO.
     //TarjetasSolicitudesClienteDTO tarjetasSolicitudesClienteDTO;
     private String nombre_trabajador; //Sale de serviciosModel.

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -43,17 +44,9 @@ public class ServiciosService {
         }
         return tarjetasDTO;
     }
-
-    /*@Transactional(readOnly = true)
-    public List<ServiciosModel> obtenerDetalleServicio(Integer idServicio) {
-        List<ServiciosModel> servicioGenerales = serviciosRepo.findById_servicio(idServicio);
-        List<TareasPorServicioModel> tareasServicio = tareasRepo.findByIdServicio(idServicio);
-
-        return servicioGenerales;
-
-    }*/
     @Transactional(readOnly = true)
     public DetallePorServicioDTO obtenerDetalleServicio(Integer idServicio) {
+        DecimalFormat df = new DecimalFormat("0.00"); //Formatear importe siempre a 2 decimales.
         ServiciosModel servicioGenerales = serviciosRepo.findById_servicio(idServicio);
         List<TareasPorServicioModel> tareasServicio = tareasRepo.findByIdServicio(idServicio);
         List<CalificacionesModel> calificaciones = calificacionesRepo.findById_usuario(servicioGenerales.getUsuarioModelTrabajador().getId());
@@ -61,48 +54,48 @@ public class ServiciosService {
         double sumaCalificaciones=0;
         for (CalificacionesModel calificacion : calificaciones){
             sumaCalificaciones+=calificacion.getCalificacion();
-            System.out.println("id_usuario: "+calificacion.getId_usuario());
-            System.out.println("calificacion: "+calificacion.getCalificacion());
+            /*System.out.println("id_usuario: "+calificacion.getId_usuario());
+            System.out.println("calificacion: "+calificacion.getCalificacion());*/
             }
         List<SubServiciosListaDTO> subServiciosLista = new ArrayList<>();
 
         for (TareasPorServicioModel tarea: tareasServicio){
+            String tareaPrecioUnitFormateado = df.format(tarea.getImporte());
+            String tareaTotalFormateado = df.format(tarea.getTotal()); //Mapear a 2 decimales
+            String tareaIvaFormateado = df.format(tarea.getIva());
+
             SubServiciosListaDTO subServicio = new SubServiciosListaDTO();
             subServicio.setSubservicio(subServiciosRepo.findDescripcionSubservicioByTipoAndId(servicioGenerales.getTipoServicioModel().getId_tiposervicio(),tarea.getSub_servicio()));
-            subServicio.setPrecio_unitario(tarea.getImporte());
+            //subServicio.setPrecio_unitario(tarea.getImporte());
+            subServicio.setPrecio_unitario(new BigDecimal(tareaPrecioUnitFormateado));
             subServicio.setCantidad(tarea.getUnidad());
-            subServicio.setIva(tarea.getIva());
-            subServicio.setSubtotal(tarea.getTotal());
-            /*System.out.println("---------------------------");
-            System.out.println("id_tarea: "+tarea.getIdTarea());
-            System.out.println("id_servicio:"+tarea.getIdServicio());
-            System.out.println("importe: "+tarea.getImporte());
-            System.out.println("iva: "+tarea.getIva());
-            System.out.println("unidad: "+tarea.getUnidad());
-            System.out.println("total: "+tarea.getTotal());*/
-
+            subServicio.setIva(new BigDecimal(tareaIvaFormateado));
+            subServicio.setSubtotal(new BigDecimal(tareaTotalFormateado));
+            //subServicio.setSubtotal(tarea.getTotal());
             subServiciosLista.add(subServicio);
         }
 
         List<StatusHistoricoDTO> statusHistoricoLista = new ArrayList<>();
-        List<HistorialStatusModel> historialStatusModel = historialStatusRepo.findByIdServicioAndIdUsuarioAndStatus(idServicio,servicioGenerales.getUsuarioModel().getId(),2);
+        List<HistorialStatusModel> historialStatusModel = historialStatusRepo.findByIdServicioAndIdUsuario(idServicio,servicioGenerales.getUsuarioModel().getId());
         for (HistorialStatusModel status : historialStatusModel){
             StatusHistoricoDTO historicoDTO = new StatusHistoricoDTO();
+            //System.out.println("status actual: "+status.getStatusModel().getStatus());
             historicoDTO.setStatus(status.getStatusModel().getDescripcion());
             historicoDTO.setFecha(status.getFecha());
 
             statusHistoricoLista.add(historicoDTO);
         }
-
-
+        String totalFormateado = df.format(servicioGenerales.getImporte()); //Mapear a 2 decimales
+        String comisionFormateado = df.format(servicioGenerales.getComision()); //Mapeas a 2 decimales
         return DetallePorServicioDTO.builder()
                 .id_servicio(servicioGenerales.getId_servicio())
                 .tipo_servicio(servicioGenerales.getTipoServicioModel().getDescripcion())
                 .num_status(servicioGenerales.getStatusModel().getStatus())
                 .status(servicioGenerales.getStatusModel().getDescripcion())
                 .fecha_solicitud(servicioGenerales.getFecha_solicitud())
-                .total(servicioGenerales.getImporte())
-                .comision(servicioGenerales.getComision())
+                //.total(servicioGenerales.getImporte())
+                .total(new BigDecimal(totalFormateado))
+                .comision(new BigDecimal(comisionFormateado))
                 .nombre_trabajador(servicioGenerales.getUsuarioModelTrabajador().getNombre())
                 .promedio_estrellas(sumaCalificaciones/totalCalificaciones)
                 .total_calificaciones(totalCalificaciones)

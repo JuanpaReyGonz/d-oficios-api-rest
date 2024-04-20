@@ -5,14 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubServiciosListaDTO {
     private String subservicio;
-    private double precio_unitario;
+    private BigDecimal precio_unitario;
     private int cantidad;
-    private double iva;
-    private double subtotal;
+    private BigDecimal iva;
+    private BigDecimal subtotal;
 }
