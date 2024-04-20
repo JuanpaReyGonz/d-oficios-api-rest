@@ -1,6 +1,5 @@
-package com.doficios.apirest.Servicios;
+package com.doficios.apirest.Models;
 
-import com.doficios.apirest.Oficios.SubServiciosModel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

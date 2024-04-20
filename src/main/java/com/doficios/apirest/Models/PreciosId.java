@@ -1,4 +1,4 @@
-package com.doficios.apirest.Oficios;
+package com.doficios.apirest.Models;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;

@@ -1,5 +1,8 @@
-package com.doficios.apirest.Servicios;
+package com.doficios.apirest.Repositories;
 
+import com.doficios.apirest.Models.HistorialStatusModel;
+import com.doficios.apirest.Models.StatusDeServicioModel;
+import com.doficios.apirest.Models.HistorialStatusId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

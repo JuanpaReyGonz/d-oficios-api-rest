@@ -1,10 +1,6 @@
-package com.doficios.apirest.Servicios;
+package com.doficios.apirest.Models;
 
-import com.doficios.apirest.Oficios.TipoServicioModel;
-import com.doficios.apirest.Usuario.UsuarioModel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

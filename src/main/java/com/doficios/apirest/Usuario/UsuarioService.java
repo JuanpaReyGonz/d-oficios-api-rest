@@ -1,5 +1,7 @@
 package com.doficios.apirest.Usuario;
 
+import com.doficios.apirest.Models.UsuarioModel;
+import com.doficios.apirest.Repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

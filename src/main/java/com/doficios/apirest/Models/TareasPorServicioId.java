@@ -1,8 +1,4 @@
-package com.doficios.apirest.Servicios;
-
-import jakarta.persistence.Column;
-import lombok.Getter;
-import lombok.Setter;
+package com.doficios.apirest.Models;
 
 import java.io.Serializable;
 import java.util.Objects;

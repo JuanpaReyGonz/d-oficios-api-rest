@@ -1,5 +1,11 @@
 package com.doficios.apirest.Oficios;
 
+import com.doficios.apirest.Models.PreciosModel;
+import com.doficios.apirest.Models.SubServiciosModel;
+import com.doficios.apirest.Models.TipoServicioModel;
+import com.doficios.apirest.Repositories.PreciosRepository;
+import com.doficios.apirest.Repositories.SubServiciosRepository;
+import com.doficios.apirest.Repositories.TipoServicioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,5 +1,6 @@
-package com.doficios.apirest.Oficios;
+package com.doficios.apirest.Models;
 
+import com.doficios.apirest.Models.SubServiciosModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

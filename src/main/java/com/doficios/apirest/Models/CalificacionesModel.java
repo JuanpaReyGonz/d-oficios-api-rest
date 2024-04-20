@@ -1,6 +1,5 @@
 package com.doficios.apirest.Models;
 
-import com.doficios.apirest.Usuario.UsuarioModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

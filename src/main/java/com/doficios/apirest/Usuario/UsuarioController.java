@@ -1,5 +1,6 @@
 package com.doficios.apirest.Usuario;
 
+import com.doficios.apirest.Models.UsuarioModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

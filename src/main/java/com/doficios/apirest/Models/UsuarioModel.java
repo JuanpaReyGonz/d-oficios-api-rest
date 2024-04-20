@@ -1,4 +1,4 @@
-package com.doficios.apirest.Usuario;
+package com.doficios.apirest.Models;
 
 import jakarta.persistence.*;
 

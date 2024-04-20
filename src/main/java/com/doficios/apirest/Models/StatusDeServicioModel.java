@@ -1,4 +1,4 @@
-package com.doficios.apirest.Servicios;
+package com.doficios.apirest.Models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

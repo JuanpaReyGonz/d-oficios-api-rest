@@ -1,12 +1,10 @@
-package com.doficios.apirest.Servicios;
+package com.doficios.apirest.Repositories;
 
-import com.doficios.apirest.Usuario.UsuarioModel;
+import com.doficios.apirest.Models.ServiciosModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public interface ServiciosRepository extends JpaRepository<ServiciosModel,Long> {
     List<ServiciosModel> findByUsuarioModelId(Long usuarioId);

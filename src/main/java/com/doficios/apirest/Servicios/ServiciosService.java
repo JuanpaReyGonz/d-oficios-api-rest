@@ -1,8 +1,10 @@
 package com.doficios.apirest.Servicios;
 
 import com.doficios.apirest.Models.CalificacionesModel;
-import com.doficios.apirest.Oficios.SubServiciosRepository;
-import com.doficios.apirest.Repositories.CalificacionesRepository;
+import com.doficios.apirest.Models.HistorialStatusModel;
+import com.doficios.apirest.Models.ServiciosModel;
+import com.doficios.apirest.Models.TareasPorServicioModel;
+import com.doficios.apirest.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Service

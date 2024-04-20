@@ -1,4 +1,4 @@
-package com.doficios.apirest.Servicios;
+package com.doficios.apirest.Models;
 
 import java.io.Serializable;
 import java.util.Objects;
