@@ -39,7 +39,7 @@ public class ServiciosService {
             dto.setTipo_servicio(servicio.getTipoServicioModel().getDescripcion());
             dto.setStatus(servicio.getStatusModel().getDescripcion());
             dto.setFecha_solicitud(servicio.getFecha_solicitud().substring(0,servicio.getFecha_solicitud().length()-3));
-            String importeFormateado = df.format(servicio.getImporte());
+            String importeFormateado = df.format(servicio.getImporte()+servicio.getComision());
             dto.setImporte(new BigDecimal(importeFormateado));
             tarjetasDTO.add(dto);
         }
