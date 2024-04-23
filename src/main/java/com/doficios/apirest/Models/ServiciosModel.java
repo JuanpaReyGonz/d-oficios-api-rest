@@ -38,8 +38,10 @@ public class ServiciosModel {
     private StatusDeServicioModel statusModel;
     //Queda mejor mapear las fechas como String que como LocalDateTime, porque sino devuelve una T entre fecha y hora.
     String fecha_solicitud;
-    LocalDateTime fecha_servicio;
-    LocalDateTime hora_servicio;
+    //LocalDateTime fecha_servicio;
+    String fecha_servicio;
+    //LocalDateTime hora_servicio;
+    String hora_servicio;
     double importe;
     Double comision;
     //double es un valor primitivo de Java y no se puede devolver un null si en la BD está mapeado así. Double si lo hace.
