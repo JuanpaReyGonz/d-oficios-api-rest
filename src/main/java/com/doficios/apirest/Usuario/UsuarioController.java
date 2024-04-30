@@ -1,12 +1,13 @@
 package com.doficios.apirest.Usuario;
 
+import com.doficios.apirest.Models.UsuarioModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/usuario")
@@ -15,9 +16,21 @@ public class UsuarioController {
     @Autowired
     UsuarioService sUsuario;
     @PostMapping()
-    public UsuarioModel registarUsuario(@RequestBody UsuarioModel usuario)
+    public UsuarioModel registrarUsuario(@RequestBody UsuarioModel usuario)
     {
         logger.info("Registrando Nuevo Usuario: "+usuario.getNombre());
         return sUsuario.registrarUsuario(usuario);
+    }
+
+    @GetMapping()
+    public ArrayList<UsuarioModel> obtenerUsuarios(){
+        logger.info("Obteniendo información de usuarios.");
+        return ResponseEntity.ok(sUsuario.obtenerUsuarios()).getBody();//sUsuario.obtenerUsuarios();
+    }
+
+    @GetMapping("/tipoUsuario")
+    public ArrayList<UsuarioModel> obtenerPorTipoUsuario(@RequestParam("tipoUsuario") char tipoUsuario){
+        logger.info("Obteniendo todos los usuarios: "+tipoUsuario);
+        return ResponseEntity.ok(sUsuario.obtenerPorTipoUsuario(tipoUsuario)).getBody();//this.sUsuario.obtenerPorTipoUsuario(tipoUsuario);
     }
 }

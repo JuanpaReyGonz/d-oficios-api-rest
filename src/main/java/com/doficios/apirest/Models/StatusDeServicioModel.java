@@ -1,0 +1,25 @@
+package com.doficios.apirest.Models;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+//@UniqueConstraints se utiliza para garantizar que los valores en una o más columnas de una tabla de base de datos asociada a una entidad sean únicos, lo que puede ser útil para mantener la integridad de los datos y evitar la duplicación no deseada.
+@Table(name="status_servicio",uniqueConstraints = {@UniqueConstraint(columnNames = {"status"})})
+public class StatusDeServicioModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false)
+    Integer status;
+
+    String descripcion;
+
+
+}
