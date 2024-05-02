@@ -68,9 +68,10 @@ public class CotizacionService {
             trabajadoresDisponiblesDTO.setNombre(trabajador.getUsuarioModel().getNombre());
             trabajadoresDisponiblesDTO.setCalificacion(trabajador.getReputacion());
             //trabajadoresDisponiblesDTO.setServicios_finalizados(serviciosRepo.countByUsuarioModelTrabajadorIdAndStatus(trabajador.getId_usuario(),16));
-            trabajadoresDisponiblesDTO.setServicios_finalizados(serviciosRepo.countByUsuarioModelTrabajadorIdAndStatus(trabajador.getUsuarioModel().getId(),16));
+            trabajadoresDisponiblesDTO.setServicios_finalizados(serviciosRepo.countByUsuarioModelTrabajadorIdAndStatus(trabajador.getUsuarioModel().getId(),17));
             //trabajadoresDisponiblesDTO.setTotal_calificaciones(calificacionesRepo.countById_usuario(trabajador.getId_usuario()));
             trabajadoresDisponiblesDTO.setTotal_calificaciones(calificacionesRepo.countById_usuario(trabajador.getUsuarioModel().getId()));
+            trabajadoresDisponiblesDTO.setPrioridad(0);
             trabajadoresDisponiblesList.add(trabajadoresDisponiblesDTO);
         }
 
@@ -85,6 +86,15 @@ public class CotizacionService {
                 .id_direccion(request.getId_direccion())
                 .subservicioList(subserviciosCotizacionDTOList)
                 .trabajadorList(trabajadoresDisponiblesList)
+                .build();
+    }
+
+    @Transactional
+    public ConfirmarCotizacionResponse confirmarCotizacion(@RequestBody CotizacionDTO request, String username){
+        int id_tiposervicio = request.getId_tiposervicio();
+
+        return ConfirmarCotizacionResponse.builder()
+                .id_servicio(0)
                 .build();
     }
 }

@@ -15,5 +15,5 @@ public class TrabajadoresDisponiblesDTO {
     private double calificacion;
     private Integer total_calificaciones;
     private Integer servicios_finalizados;
-    private Integer prioridad = 0;
+    private Integer prioridad;
 }
