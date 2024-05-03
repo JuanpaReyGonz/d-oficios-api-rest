@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StatusHistoricoDTO {
+    private int num_status;
     private String status;
     private String fecha;
 }

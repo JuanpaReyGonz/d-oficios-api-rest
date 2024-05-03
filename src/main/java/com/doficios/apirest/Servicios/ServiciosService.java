@@ -26,6 +26,12 @@ public class ServiciosService {
     SubServiciosRepository subServiciosRepo;
     @Autowired
     HistorialStatusRepository historialStatusRepo;
+    @Autowired
+    EntidadRepository entidadRepo;
+    @Autowired
+    MunicipioRepository municipioRepo;
+    @Autowired
+    LocalidadRepository localidadRepo;
 
     public List<TarjetasSolicitudesClienteDTO> obtenerTarjetasSolicitudesCliente(String username) {
         DecimalFormat df = new DecimalFormat("0.00"); //Formatear importe siempre a 2 decimales.
@@ -51,6 +57,11 @@ public class ServiciosService {
         ServiciosModel servicioGenerales = serviciosRepo.findById_servicio(idServicio);
         List<TareasPorServicioModel> tareasServicio = tareasRepo.findByIdServicio(idServicio);
         List<CalificacionesModel> calificaciones = calificacionesRepo.findById_usuario(servicioGenerales.getUsuarioModelTrabajador().getId());
+        String entidad = entidadRepo.findByIdEntidad(servicioGenerales.getEntidad());
+        String municipio = municipioRepo.findByIdEntidadAndIdMunicipio(servicioGenerales.getEntidad(),servicioGenerales.getMunicipio());
+        String localidad = localidadRepo.findByIdEntidadAndIdMunicipioAndIdLocalidad(servicioGenerales.getEntidad(),servicioGenerales.getMunicipio(),servicioGenerales.getLocalidad());
+        String lugarServicio = servicioGenerales.getDomicilio() +" " +servicioGenerales.getExterior() + " " +servicioGenerales.getInterior()
+                + " " + servicioGenerales.getColonia() + " "+ servicioGenerales.getCp() + ", "+ localidad+", "+municipio+", "+entidad;
         int totalCalificaciones = calificaciones.size();
         double sumaCalificaciones=0;
         for (CalificacionesModel calificacion : calificaciones){
@@ -81,6 +92,7 @@ public class ServiciosService {
         for (HistorialStatusModel status : historialStatusModel){
             StatusHistoricoDTO historicoDTO = new StatusHistoricoDTO();
             //System.out.println("status actual: "+status.getStatusModel().getStatus());
+            historicoDTO.setNum_status(status.getStatusModel().getStatus());
             historicoDTO.setStatus(status.getStatusModel().getDescripcion());
             historicoDTO.setFecha(status.getFecha());
 
@@ -94,6 +106,9 @@ public class ServiciosService {
                 .num_status(servicioGenerales.getStatusModel().getStatus())
                 .status(servicioGenerales.getStatusModel().getDescripcion())
                 .fecha_solicitud(servicioGenerales.getFecha_solicitud())
+                .fecha_servicio(servicioGenerales.getFecha_servicio())
+                .hora_servicio(servicioGenerales.getHora_servicio())
+                .lugar_servicio(lugarServicio)
                 //.total(servicioGenerales.getImporte())
                 .total(new BigDecimal(totalFormateado))
                 .comision(new BigDecimal(comisionFormateado))

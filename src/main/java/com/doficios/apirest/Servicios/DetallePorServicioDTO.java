@@ -27,6 +27,9 @@ public class DetallePorServicioDTO {
     private String nombre_trabajador; //Sale de serviciosModel.
     private double promedio_estrellas;
     private int total_calificaciones;
+    private String fecha_servicio;
+    private String hora_servicio;
+    private String lugar_servicio;
     List<SubServiciosListaDTO> subservicios_lista;
     List<StatusHistoricoDTO> status_historico;
 }
