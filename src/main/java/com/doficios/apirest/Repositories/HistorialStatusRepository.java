@@ -18,7 +18,7 @@ public interface HistorialStatusRepository extends JpaRepository<HistorialStatus
     @Query("SELECT h FROM HistorialStatusModel h JOIN FETCH h.statusModel s WHERE h.idServicio = :idServicio AND h.idUsuario = :idUsuario AND s.status = :status")
     List<HistorialStatusModel> findByIdServicioAndIdUsuarioAndStatus(Integer idServicio, Long idUsuario, StatusDeServicioModel status);
 
-    @Query("SELECT h FROM HistorialStatusModel h WHERE h.idServicio = :idServicio AND h.idUsuario = :idUsuario ORDER BY h.fecha DESC LIMIT 1")
+    @Query("SELECT h FROM HistorialStatusModel h WHERE h.idServicio = :idServicio AND h.idUsuario = :idUsuario ORDER BY h.statusModel.status DESC LIMIT 1")
     HistorialStatusModel findLastStatusByIdServicioAndIdUsuario(Long idServicio, Long idUsuario);
 
     @Transactional

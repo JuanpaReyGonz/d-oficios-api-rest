@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,17 +116,21 @@ public class CotizacionService {
         DateTimeFormatter formatHora = DateTimeFormatter.ofPattern("HH:mm");
         LocalDate fechaServicio = LocalDate.parse(request.getFecha_servicio(), formatFecha);
         LocalTime horaServicio = LocalTime.parse(request.getHora_servicio(), formatHora);
+        //Obteniendo fecha actual con zona horaria GMT-6
+        ZoneId gmtMinus6 = ZoneId.of("GMT-6");
+        ZonedDateTime nowInGmtMinus6 = ZonedDateTime.now(gmtMinus6);
+        LocalDateTime fechaGrabadoServicio = nowInGmtMinus6.toLocalDateTime();
 
         //Insertando en tabla de servicios
-         serviciosRepo.insertarServicio(idUsuario,trabajadorSeleccionado,2, LocalDateTime.now(), fechaServicio,horaServicio,
+         serviciosRepo.insertarServicio(idUsuario,trabajadorSeleccionado,2, fechaGrabadoServicio, fechaServicio,horaServicio,
                 request.getTotal(),request.getComision(), request.getId_tiposervicio(), direccion.getEntidad(),direccion.getMunicipio(),
                 direccion.getLocalidad(),direccion.getDomicilio(),direccion.getExterior(), direccion.getInterior(), direccion.getColonia(), direccion.getCp());
          Long idServicio = serviciosRepo.getLastInsertedId();
          System.out.println("Se inserto el servicio "+idServicio);
 
         //Insertando en historial_status
-        historialRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,idUsuario,1,LocalDateTime.now());
-        historialRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,trabajadorSeleccionado,2,LocalDateTime.now());
+        historialRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,idUsuario,1,fechaGrabadoServicio);
+        historialRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,trabajadorSeleccionado,2,fechaGrabadoServicio);
         System.out.println("Se inserto en historial_status");
 
         //Insertando en tareas_servicio
