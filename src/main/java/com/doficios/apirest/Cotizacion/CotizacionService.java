@@ -1,15 +1,18 @@
 package com.doficios.apirest.Cotizacion;
 
-import com.doficios.apirest.Models.PreciosModel;
-import com.doficios.apirest.Models.TipoServicioModel;
-import com.doficios.apirest.Models.TrabajadoresModel;
+import com.doficios.apirest.Models.*;
 import com.doficios.apirest.Repositories.*;
 import com.doficios.apirest.Trabajadores.TrabajadoresDisponiblesDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +31,14 @@ public class CotizacionService {
     ServiciosRepository serviciosRepo;
     @Autowired
     CalificacionesRepository calificacionesRepo;
+    @Autowired
+    UsuarioRepository usuarioRepo;
+    @Autowired
+    DireccionesRepository direccionesRepo;
+    @Autowired
+    HistorialStatusRepository historialRepo;
+    @Autowired
+    TareasPorServicioRepository tareasPorServicioRepo;
     @Transactional(readOnly = true)
     public CotizacionDTO obtenerCotizacion(@RequestBody CotizacionRequest request){
         //Obteniendo toda la lista de datos que se manda desde el request
@@ -91,10 +102,47 @@ public class CotizacionService {
 
     @Transactional
     public ConfirmarCotizacionResponse confirmarCotizacion(@RequestBody CotizacionDTO request, String username){
-        int id_tiposervicio = request.getId_tiposervicio();
+        Long idUsuario = (long) usuarioRepo.findByCorreo(username);
+        //Obteniendo información de la direccion del usuario.
+        DireccionesModel direccion = direccionesRepo.findById_UsuarioAndId_Direccion(idUsuario, request.getId_direccion());
+        //Obteniendo listado de trabajadores y el prioritario
+        Long trabajadorSeleccionado = null;
+        List<TrabajadoresDisponiblesDTO> trabajadores = request.trabajadorList;
+        for (TrabajadoresDisponiblesDTO trabajador: trabajadores){
+            if(trabajador.getPrioridad() == 1){
+                trabajadorSeleccionado = trabajador.getId_trabajador();
+            }
+        }
+        //Formateando las fechas
+        DateTimeFormatter formatFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatHora = DateTimeFormatter.ofPattern("HH:mm");
+        LocalDate fechaServicio = LocalDate.parse(request.getFecha_servicio(), formatFecha);
+        LocalTime horaServicio = LocalTime.parse(request.getHora_servicio(), formatHora);
+
+        //Insertando en tabla de servicios
+         serviciosRepo.insertarServicio(idUsuario,trabajadorSeleccionado,2, LocalDateTime.now(), fechaServicio,horaServicio,
+                request.getTotal(),request.getComision(), request.getId_tiposervicio(), direccion.getEntidad(),direccion.getMunicipio(),
+                direccion.getLocalidad(),direccion.getDomicilio(),direccion.getExterior(), direccion.getInterior(), direccion.getColonia(), direccion.getCp());
+         Long idServicio = serviciosRepo.getLastInsertedId();
+         System.out.println("Se inserto el servicio "+idServicio);
+
+        //Insertando en historial_status
+        historialRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,idUsuario,1,LocalDateTime.now());
+        historialRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,trabajadorSeleccionado,2,LocalDateTime.now());
+        System.out.println("Se inserto en historial_status");
+
+        //Insertando en tareas_servicio
+        int idTarea=1;
+        List<SubserviciosCotizacionDTO> subservicios = request.subservicioList;
+        for (SubserviciosCotizacionDTO subservicio : subservicios){
+            tareasPorServicioRepo.insertTareasServicio(idTarea,idServicio,subservicio.getPrecio_unitario(),subservicio.getIva(),1,
+                    subservicio.getId_subservicio(),subservicio.getCantidad(),subservicio.getSubtotal());
+            System.out.println("Se inserto la tarea "+idTarea +" del servicio: "+idServicio);
+        idTarea++;
+        }
 
         return ConfirmarCotizacionResponse.builder()
-                .id_servicio(0)
+                .id_servicio(idServicio)
                 .build();
     }
 }

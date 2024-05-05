@@ -5,7 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public interface ServiciosRepository extends JpaRepository<ServiciosModel,Long> {
@@ -20,8 +25,15 @@ public interface ServiciosRepository extends JpaRepository<ServiciosModel,Long> 
     @Query("SELECT s FROM ServiciosModel s WHERE s.id_servicio = :id_servicio")
     ServiciosModel findById_servicio(Integer id_servicio);
 
-    /*@Modifying
-    @Query("INSERT INTO servicios (cliente, trabajador, status, fecha_solicitud, fecha_servicio, hora_servicio, importe, comision, tipo_servicio) " +
-            "VALUES (:cliente, :trabajador, CURRENT_TIMESTAMP, :fechaServicio, :horaServicio, :importe, :comision, :tipoServicio)")
-    void insertarServicioParcial(Long cliente, Long trabajador, LocalDate fechaServicio, LocalTime horaServicio, BigDecimal importe, BigDecimal comision, Integer tipoServicio);*/
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO servicios (cliente, trabajador, status, fecha_solicitud, fecha_servicio, hora_servicio, importe, comision, tipo_servicio, entidad, municipio, localidad, domicilio, exterior, interior, colonia, cp) " +
+            "VALUES (:cliente, :trabajador, :status, :fechaSolicitud, :fechaServicio, :horaServicio, :importe, :comision, :tipoServicio, :entidad, :municipio, :localidad, :domicilio, :exterior, :interior, :colonia, :cp)",
+            nativeQuery = true)
+    void insertarServicio(Long cliente, Long trabajador, Integer status, LocalDateTime fechaSolicitud, LocalDate fechaServicio,
+                          LocalTime horaServicio, double importe, double comision, Integer tipoServicio, Integer entidad, Integer municipio,
+                          Integer localidad, String domicilio, String exterior, String interior, String colonia, String cp);
+
+    @Query(value = "SELECT LAST_INSERT_ID()", nativeQuery = true)
+    Long getLastInsertedId();
 }
