@@ -32,20 +32,36 @@ public class ServiciosService {
     MunicipioRepository municipioRepo;
     @Autowired
     LocalidadRepository localidadRepo;
+    @Autowired
+    UsuarioRepository usuarioRepo;
 
     public List<TarjetasSolicitudesClienteDTO> obtenerTarjetasSolicitudesCliente(String username) {
         DecimalFormat df = new DecimalFormat("0.00"); //Formatear importe siempre a 2 decimales.
-
+        //Obtener el ID del usuario a partir del correo.
+        char tipoUsuario = usuarioRepo.findTipoUsuarioByCorreo(username);
+        Long idUsuario = (long) usuarioRepo.findByCorreo(username);
+        //System.out.println(historialStatusRepo.findLastStatusByIdServicioAndIdUsuario(1,1L).getFecha());
        //List<ServiciosModel> servicios = serviciosRepo.findAll();
         List<ServiciosModel> servicios = serviciosRepo.findByUsuarioModelCorreo(username);
         List<TarjetasSolicitudesClienteDTO> tarjetasDTO = new ArrayList<>();
         for (ServiciosModel servicio : servicios) {
+            //System.out.println("Id servicio: "+servicio.getId_servicio());
+            //System.out.println("Id Usuario: " + idUsuario);
+            HistorialStatusModel status = historialStatusRepo.findLastStatusByIdServicioAndIdUsuario(servicio.getId_servicio(),idUsuario);
+            //System.out.println(status.toString());
             TarjetasSolicitudesClienteDTO dto = new TarjetasSolicitudesClienteDTO();
             dto.setId_servicio(servicio.getId_servicio());
             dto.setTipo_servicio(servicio.getTipoServicioModel().getDescripcion());
-            dto.setStatus(servicio.getStatusModel().getDescripcion());
+            //dto.setStatus(servicio.getStatusModel().getDescripcion());
+            dto.setStatus(status.getStatusModel().getDescripcion());
             dto.setFecha_solicitud(servicio.getFecha_solicitud().substring(0,servicio.getFecha_solicitud().length()-3));
-            String importeFormateado = df.format(servicio.getImporte()+servicio.getComision());
+            String importeFormateado = null;
+            if (tipoUsuario == 'C'){
+                importeFormateado = df.format(servicio.getImporte()+servicio.getComision());
+            } else if (tipoUsuario == 'T') {
+                importeFormateado = df.format(servicio.getImporte());
+            }
+            assert importeFormateado != null;
             dto.setImporte(new BigDecimal(importeFormateado));
             tarjetasDTO.add(dto);
         }
@@ -98,13 +114,16 @@ public class ServiciosService {
 
             statusHistoricoLista.add(historicoDTO);
         }
+        HistorialStatusModel statusActual = historialStatusRepo.findLastStatusByIdServicioAndIdUsuario(Long.valueOf(idServicio),servicioGenerales.getUsuarioModel().getId());
         String totalFormateado = df.format(servicioGenerales.getImporte()); //Mapear a 2 decimales
         String comisionFormateado = df.format(servicioGenerales.getComision()); //Mapeas a 2 decimales
         return DetallePorServicioDTO.builder()
                 .id_servicio(servicioGenerales.getId_servicio())
                 .tipo_servicio(servicioGenerales.getTipoServicioModel().getDescripcion())
-                .num_status(servicioGenerales.getStatusModel().getStatus())
-                .status(servicioGenerales.getStatusModel().getDescripcion())
+                //.num_status(servicioGenerales.getStatusModel().getStatus())
+                .num_status(statusActual.getStatusModel().getStatus())
+                //.status(servicioGenerales.getStatusModel().getDescripcion())
+                .status(statusActual.getStatusModel().getDescripcion())
                 .fecha_solicitud(servicioGenerales.getFecha_solicitud())
                 .fecha_servicio(servicioGenerales.getFecha_servicio())
                 .hora_servicio(servicioGenerales.getHora_servicio())
