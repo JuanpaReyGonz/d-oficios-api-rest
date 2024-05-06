@@ -36,4 +36,9 @@ public interface ServiciosRepository extends JpaRepository<ServiciosModel,Long> 
 
     @Query(value = "SELECT LAST_INSERT_ID()", nativeQuery = true)
     Long getLastInsertedId();
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE ServiciosModel u SET u.statusModel.status = :status WHERE u.id_servicio = :idServicio")
+    void actualizaStatusServicio(Long idServicio, Integer status);
 }

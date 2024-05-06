@@ -18,4 +18,9 @@ public interface TareasPorServicioRepository extends JpaRepository<TareasPorServ
             "VALUES (:idTarea, :idServicio, :importe, :iva, :status, :subServicio, :unidad, :total)", nativeQuery = true)
     void insertTareasServicio(Integer idTarea, Long idServicio, double importe, double iva, Integer status,
                                           Integer subServicio, Integer unidad, double total);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE TareasPorServicioModel SET statusTarea.status = :status WHERE idServicio = :idServicio")
+    void actualizaStatusTareas(Long idServicio, Integer status);
 }
