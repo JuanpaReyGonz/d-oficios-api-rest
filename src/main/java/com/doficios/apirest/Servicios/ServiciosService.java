@@ -42,7 +42,13 @@ public class ServiciosService {
         Long idUsuario = (long) usuarioRepo.findByCorreo(username);
         //System.out.println(historialStatusRepo.findLastStatusByIdServicioAndIdUsuario(1,1L).getFecha());
        //List<ServiciosModel> servicios = serviciosRepo.findAll();
-        List<ServiciosModel> servicios = serviciosRepo.findByUsuarioModelCorreo(username);
+        List<ServiciosModel> servicios = null;
+        if(tipoUsuario=='T'){
+            servicios = serviciosRepo.findByUsuarioModelTrabajadorCorreo(username);
+        } else if (tipoUsuario =='C') {
+            servicios = serviciosRepo.findByUsuarioModelCorreo(username);
+        }
+        
         List<TarjetasSolicitudesClienteDTO> tarjetasDTO = new ArrayList<>();
         for (ServiciosModel servicio : servicios) {
             //System.out.println("Id servicio: "+servicio.getId_servicio());
