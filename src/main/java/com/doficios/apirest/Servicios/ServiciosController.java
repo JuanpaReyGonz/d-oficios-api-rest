@@ -37,10 +37,17 @@ public class ServiciosController {
     }
 
     @PostMapping()
-    public ResponseEntity<DetallePorServicioDTO> obtenerDetalle(@RequestBody DetallePorServicioRequest request){
+    public ResponseEntity<DetallePorServicioDTO> obtenerDetalle(@RequestBody DetallePorServicioRequest request,HttpServletRequest user){
+        final String authHeader = user.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = null;
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+        JwtService jwtService = new JwtService();
+        String username = jwtService.getUsernameFromToken(token);
         logger.info("Se está consumiendo el endpoint /servicios");
-        logger.info("Obteniendo las tareas del servicio: "+request.getId_servicio());
-        return ResponseEntity.ok(sServicios.obtenerDetalleServicio(request.getId_servicio()));
+        logger.info("Obteniendo las tareas del servicio: "+request.getId_servicio()+" por: "+username);
+        return ResponseEntity.ok(sServicios.obtenerDetalleServicio(request.getId_servicio(),username));
     }
 
 }

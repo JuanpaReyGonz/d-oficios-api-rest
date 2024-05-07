@@ -13,4 +13,7 @@ public interface CalificacionesRepository extends JpaRepository<CalificacionesMo
 
     @Query("SELECT COUNT(c) FROM CalificacionesModel c WHERE c.id_usuario = :idUsuario")
     int countById_usuario(Long idUsuario);
+
+    @Query("SELECT c FROM CalificacionesModel c WHERE c.id_usuario = :idUsuario AND c.id_servicio = :idServicio")
+    CalificacionesModel findByIdUsuarioAndIdServicio(Long idUsuario, Integer idServicio);
 }

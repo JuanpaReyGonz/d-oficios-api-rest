@@ -1,4 +1,4 @@
-package com.doficios.apirest.Servicios;
+package com.doficios.apirest.Cotizacion;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StatusHistoricoDTO {
-    private int num_status;
-    private String status;
-    private String fecha;
+public class ConfirmarCotizacionResponse {
+    Long id_servicio;
 }

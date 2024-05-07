@@ -56,4 +56,10 @@ public class ServiciosModel {
     int municipio;
     int localidad;
     String domicilio;
+    String exterior;
+    String interior;
+    String colonia;
+    String cp;
+    Integer calificacion;
+    String comentario;
 }

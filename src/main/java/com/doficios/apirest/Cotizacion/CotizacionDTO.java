@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CotizacionDTO {
     private int id_tiposervicio;
-    private String tipo_servicio;
+    private String tipo_servicio; // No se usa para confirmación de solicitud.
     private double comision;
     private double total;
     private String fecha_servicio;
