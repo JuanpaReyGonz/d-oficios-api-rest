@@ -52,10 +52,10 @@ public class UpdateStatusService {
             historialStatusRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,cliente,11,fechaActual);
             historialStatusRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,trabajador,11,fechaActual);
             serviciosRepo.actualizaStatusServicio(idServicio,11);
-        } else if (status == 12) {
-            historialStatusRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,cliente,12,fechaActual);
+        } else if (status == 17) {
+            //historialStatusRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,cliente,12,fechaActual);
             historialStatusRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,cliente,17,fechaActual);
-            historialStatusRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,trabajador,12,fechaActual);
+            //historialStatusRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,trabajador,12,fechaActual);
             historialStatusRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,trabajador,17,fechaActual);
             serviciosRepo.actualizaStatusServicio(idServicio,17);
             tareasRepo.actualizaStatusTareas(idServicio,3);

@@ -74,7 +74,9 @@ public class ServiciosService {
         return tarjetasDTO;
     }
     @Transactional(readOnly = true)
-    public DetallePorServicioDTO obtenerDetalleServicio(Integer idServicio) {
+    public DetallePorServicioDTO obtenerDetalleServicio(Integer idServicio, String username) {
+        //Revisar por ID
+        Long idUsuario = (long) usuarioRepo.findByCorreo(username);
         DecimalFormat df = new DecimalFormat("0.00"); //Formatear importe siempre a 2 decimales.
         ServiciosModel servicioGenerales = serviciosRepo.findById_servicio(idServicio);
         List<TareasPorServicioModel> tareasServicio = tareasRepo.findByIdServicio(idServicio);
@@ -110,7 +112,8 @@ public class ServiciosService {
         }
 
         List<StatusHistoricoDTO> statusHistoricoLista = new ArrayList<>();
-        List<HistorialStatusModel> historialStatusModel = historialStatusRepo.findByIdServicioAndIdUsuario(idServicio,servicioGenerales.getUsuarioModel().getId());
+        //List<HistorialStatusModel> historialStatusModel = historialStatusRepo.findByIdServicioAndIdUsuario(idServicio,servicioGenerales.getUsuarioModel().getId());
+        List<HistorialStatusModel> historialStatusModel = historialStatusRepo.findByIdServicioAndIdUsuario(idServicio,idUsuario);
         for (HistorialStatusModel status : historialStatusModel){
             StatusHistoricoDTO historicoDTO = new StatusHistoricoDTO();
             //System.out.println("status actual: "+status.getStatusModel().getStatus());
@@ -120,7 +123,8 @@ public class ServiciosService {
 
             statusHistoricoLista.add(historicoDTO);
         }
-        HistorialStatusModel statusActual = historialStatusRepo.findLastStatusByIdServicioAndIdUsuario(Long.valueOf(idServicio),servicioGenerales.getUsuarioModel().getId());
+        //HistorialStatusModel statusActual = historialStatusRepo.findLastStatusByIdServicioAndIdUsuario(Long.valueOf(idServicio),servicioGenerales.getUsuarioModel().getId());
+        HistorialStatusModel statusActual = historialStatusRepo.findLastStatusByIdServicioAndIdUsuario(Long.valueOf(idServicio),idUsuario);
         String totalFormateado = df.format(servicioGenerales.getImporte()); //Mapear a 2 decimales
         String comisionFormateado = df.format(servicioGenerales.getComision()); //Mapeas a 2 decimales
         return DetallePorServicioDTO.builder()
