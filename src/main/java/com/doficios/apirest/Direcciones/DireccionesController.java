@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,4 +30,8 @@ public class DireccionesController {
         String username = jwtService.getUsernameFromToken(token);
         return ResponseEntity.ok(sDirecciones.obtenerDireccionesUsuario(username)).getBody();
     }
+
+    //@PostMapping("/createUpdate")
+    //public Dire
+
 }
