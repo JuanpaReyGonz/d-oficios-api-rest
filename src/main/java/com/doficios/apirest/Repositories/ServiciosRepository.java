@@ -21,6 +21,13 @@ public interface ServiciosRepository extends JpaRepository<ServiciosModel,Long> 
             "AND s.statusModel.status = :status")
     int countByUsuarioModelTrabajadorIdAndStatus(@Param("usuarioTrabajadorId") Long usuarioTrabajadorId,
                                                  @Param("status") Integer status);
+
+    @Query("SELECT COUNT(s) FROM ServiciosModel s " +
+            "WHERE s.usuarioModel.id_usuario = :usuarioClienteId " +
+            "AND s.statusModel.status = :status")
+    int countByUsuarioModelIdAndStatus(@Param("usuarioClienteId") Long usuarioClienteId,
+                                                 @Param("status") Integer status);
+
     List<ServiciosModel> findByUsuarioModelCorreo(String correo);
     List<ServiciosModel> findByUsuarioModelTrabajadorCorreo(String correo);
     @Query("SELECT s FROM ServiciosModel s WHERE s.id_servicio = :id_servicio")

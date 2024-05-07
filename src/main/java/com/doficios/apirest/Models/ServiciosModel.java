@@ -60,4 +60,6 @@ public class ServiciosModel {
     String interior;
     String colonia;
     String cp;
+    Integer calificacion;
+    String comentario;
 }

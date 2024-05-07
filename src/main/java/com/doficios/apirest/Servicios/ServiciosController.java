@@ -46,7 +46,7 @@ public class ServiciosController {
         JwtService jwtService = new JwtService();
         String username = jwtService.getUsernameFromToken(token);
         logger.info("Se está consumiendo el endpoint /servicios");
-        logger.info("Obteniendo las tareas del servicio: "+request.getId_servicio());
+        logger.info("Obteniendo las tareas del servicio: "+request.getId_servicio()+" por: "+username);
         return ResponseEntity.ok(sServicios.obtenerDetalleServicio(request.getId_servicio(),username));
     }
 

@@ -22,7 +22,7 @@ public class CalificacionesModel {
     @Column(name = "id_servicio")
     private Long id_servicio;
 
-    private int calificacion;
+    private Integer calificacion;
 
     private String comentario;
 

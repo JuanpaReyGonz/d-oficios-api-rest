@@ -16,4 +16,6 @@ public interface UsuarioRepository extends CrudRepository<UsuarioModel, Long> {
     @Query("SELECT u.tipoUsuario FROM UsuarioModel u WHERE u.correo = :correo")
     char findTipoUsuarioByCorreo(String correo);
 
+    @Query("SELECT u.telefono FROM UsuarioModel u WHERE u.id_usuario = :idUsuario")
+    String findTelByIdUsuario(Long idUsuario);
 }
