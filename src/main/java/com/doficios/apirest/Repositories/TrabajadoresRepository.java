@@ -4,6 +4,7 @@ import com.doficios.apirest.Models.TipoServicioModel;
 import com.doficios.apirest.Models.TrabajadoresModel;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -26,5 +27,16 @@ public interface TrabajadoresRepository extends JpaRepository<TrabajadoresModel,
 
     @Query("SELECT t FROM TrabajadoresModel t WHERE t.id_usuario = :idUsuario")
     TrabajadoresModel findTrabajadorByIdUsuario(int idUsuario);
+
+    @Modifying
+    @Query("UPDATE TrabajadoresModel t SET t.descripcion = :descripcion, t.experiencia = :experiencia, t.tipo_servicio = :tipoServicio, " +
+            "t.clabe = :clabe, t.foto_trabajo = :fotoTrabajo WHERE t.id_usuario = :idUsuario")
+    void updateTrabajador(@Param("idUsuario") int idUsuario,
+                          @Param("descripcion") String descripcion,
+                          @Param("experiencia") String experiencia,
+                          @Param("tipoServicio") int tipoServicio,
+                          @Param("clabe") String clabe,
+                          @Param("fotoTrabajo") String fotoTrabajo,
+                          @Param("codigoRegistro") String codigoRegistro);
 
 }
