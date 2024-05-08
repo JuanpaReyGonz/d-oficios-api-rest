@@ -23,4 +23,8 @@ public interface TrabajadoresRepository extends JpaRepository<TrabajadoresModel,
             "WHERE s.fecha_servicio = :fechaServicio) " +
             "ORDER BY t.reputacion DESC")
     List<TrabajadoresModel> findTop3TrabajadoresByTipoServicioIdAndNotInServiciosOrderByReputacionDesc(@Param("tipoServicioId") Integer tipoServicioId, @Param("fechaServicio") String fechaServicio);*/
+
+    @Query("SELECT t FROM TrabajadoresModel t WHERE t.id_usuario = :idUsuario")
+    TrabajadoresModel findTrabajadorByIdUsuario(int idUsuario);
+
 }

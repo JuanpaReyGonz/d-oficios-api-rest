@@ -40,8 +40,6 @@ public class ServiciosService {
         //Obtener el ID del usuario a partir del correo.
         char tipoUsuario = usuarioRepo.findTipoUsuarioByCorreo(username);
         Long idUsuario = (long) usuarioRepo.findByCorreo(username);
-        //System.out.println(historialStatusRepo.findLastStatusByIdServicioAndIdUsuario(1,1L).getFecha());
-       //List<ServiciosModel> servicios = serviciosRepo.findAll();
         List<ServiciosModel> servicios = null;
         if(tipoUsuario=='T'){
             servicios = serviciosRepo.findByUsuarioModelTrabajadorCorreo(username);
@@ -51,14 +49,11 @@ public class ServiciosService {
         
         List<TarjetasSolicitudesClienteDTO> tarjetasDTO = new ArrayList<>();
         for (ServiciosModel servicio : servicios) {
-            //System.out.println("Id servicio: "+servicio.getId_servicio());
-            //System.out.println("Id Usuario: " + idUsuario);
             HistorialStatusModel status = historialStatusRepo.findLastStatusByIdServicioAndIdUsuario(servicio.getId_servicio(),idUsuario);
-            //System.out.println(status.toString());
             TarjetasSolicitudesClienteDTO dto = new TarjetasSolicitudesClienteDTO();
             dto.setId_servicio(servicio.getId_servicio());
             dto.setTipo_servicio(servicio.getTipoServicioModel().getDescripcion());
-            //dto.setStatus(servicio.getStatusModel().getDescripcion());
+            dto.setId_status(status.getStatusModel().getStatus());
             dto.setStatus(status.getStatusModel().getDescripcion());
             dto.setFecha_solicitud(servicio.getFecha_solicitud().substring(0,servicio.getFecha_solicitud().length()-3));
             String importeFormateado = null;

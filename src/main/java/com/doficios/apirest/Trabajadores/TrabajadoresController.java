@@ -1,18 +1,25 @@
 package com.doficios.apirest.Trabajadores;
 
+import com.doficios.apirest.Jwt.JwtService;
+import com.doficios.apirest.Models.UsuarioModel;
+import com.doficios.apirest.Repositories.UsuarioRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/trabajadores")
 public class TrabajadoresController {
-    //private static final Logger logger = (Logger) LoggerFactory.getLogger(TrabajadoresController.class);
+    @Autowired
+    UsuarioRepository usuarioRepo;
+    private static final Logger logger = LoggerFactory.getLogger(TrabajadoresController.class);
     @Autowired
     TrabajadoresService sTrabajadores;
 
@@ -20,6 +27,25 @@ public class TrabajadoresController {
     public List<TrabajadoresDisponiblesDTO> obtenerTrabajadoresDisponibles(){
         //logger.info("Se esta extrayendo a los perfiles de trabajador más adecuados a la solicitud");
         return sTrabajadores.obtenerPerfilesTrabajador();
+    }
+
+    @PostMapping("/perfil")
+    public ResponseEntity<TrabajadorPerfilResponse> mostrarPerfilTrabajador(@RequestBody TrabajadorPerfilRequest request, HttpServletRequest requestUser){
+        final String authHeader = requestUser.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = null;
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+        JwtService jwtService = new JwtService();
+        String username = jwtService.getUsernameFromToken(token);
+        if (request.getId_trabajador()==0){
+            int usuario = usuarioRepo.findByCorreo(username);
+            logger.info("El trabajador: "+username+" esta consumiendo /trabajadores/perfil");
+            return ResponseEntity.ok(sTrabajadores.mostrarPerfilTrabajador(usuario));
+        }else{
+            logger.info("El cliente esta revisando el perfil del trabajador: "+username+". Consumiendo /trabajadores/perfil");
+            return ResponseEntity.ok(sTrabajadores.mostrarPerfilTrabajador(request.getId_trabajador()));
+        }
     }
 
 }

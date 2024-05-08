@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 public class TarjetasSolicitudesClienteDTO {
     private Long id_servicio;
     private String tipo_servicio;
+    private int id_status;
     private String status;
     private String fecha_solicitud;
     private BigDecimal importe;
