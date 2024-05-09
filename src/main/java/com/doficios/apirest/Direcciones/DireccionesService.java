@@ -57,14 +57,34 @@ public class DireccionesService {
         return direccionesUsuarioDTOList;
     }
 
-    /*@Transactional
+    @Transactional
     public DireccionCreateUpdateResponse createUpdateDireccion(@RequestBody DireccionCreateUpdateRequest request, String username){
         Long usuario = (long) usuarioRepo.findByCorreo(username);
-        direccionesRepo.insertOrUpdateDireccion(usuario, request.get);
+        int direccion;
+        if (request.getId_direccion() == 0){
+            //Si se recibe el parametro en 0 significa insertar una nueva direccion para el usuario.
+            //Se valida cuantas direcciones tiene el usuario registradas, y se agrega + 1 para pasar el siguiente id_direccion.
+            direccion = direccionesRepo.countDireccionesById_Usuario(usuario);
+            direccion++;
+        } else {
+            //En caso contrario, almaceno el que definio el usuario, pues significa que quiere actualizarlo.
+            direccion = request.getId_direccion();
+        }
+        //Cachar el valor de numero interior por si el cliente lo manda vacío
+        String numInterior;
+        if(request.getInterior() == null || request.getInterior().isEmpty()){
+            numInterior = "SN Int";
+        } else {
+            numInterior = request.getInterior();
+        }
+
+        direccionesRepo.insertOrUpdateDireccion(usuario,direccion,request.getEntidad(),request.getMunicipio(),request.getLocalidad(),
+                                                request.getDomicilio(), request.getExterior(), numInterior, request.getColonia(),
+                                                request.getCp(), request.getFavorito());
         return DireccionCreateUpdateResponse.builder()
-                .id_direccion(1)
+                .id_direccion(direccion)
                 .build();
-    }*/
+    }
 
     @Transactional(readOnly = true)
     public List<EntidadesModel> obtenerEntidades(){

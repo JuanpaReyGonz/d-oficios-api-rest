@@ -17,16 +17,20 @@ public interface DireccionesRepository extends JpaRepository<DireccionesModel, D
     //@Query("SELECT d FROM DireccionesModel d JOIN FETCH d.entidadModel JOIN FETCH d.municipioModel JOIN FETCH d.localidadModel WHERE d.usuario = :usuario")
     List<DireccionesModel> findById_Usuario(Integer usuario);
 
+    @Query("SELECT COUNT(d) FROM DireccionesModel d WHERE d.usuarioModel.id_usuario = :usuario")
+    int countDireccionesById_Usuario(Long usuario);
+
     //Insert y Update Direcciones
     @Transactional
     @Modifying
     @Query(value = "INSERT INTO direcciones (usuario, id_direccion, entidad, municipio, localidad, domicilio, exterior, interior, colonia, cp, favorito) " +
             "VALUES (:usuario, :idDireccion, :entidad, :municipio, :localidad, :domicilio, :exterior, :interior, :colonia, :cp, :favorito) " +
-            "ON CONFLICT (usuario, id_direccion) DO UPDATE SET " +
+            //"ON CONFLICT (usuario, id_direccion) DO UPDATE SET " +
+            "ON DUPLICATE KEY UPDATE " +
             "entidad = :entidad, municipio = :municipio, localidad = :localidad, domicilio = :domicilio, " +
             "exterior = :exterior, interior = :interior, colonia = :colonia, cp = :cp, favorito = :favorito",
             nativeQuery = true)
     void insertOrUpdateDireccion(Long usuario, int idDireccion, int entidad, int municipio, int localidad,
-                                 String domicilio, String exterior, String interior, String colonia, String cp, boolean favorito);
+                                 String domicilio, String exterior, String interior, String colonia, String cp, byte favorito);
 
 }

@@ -32,7 +32,7 @@ public class DireccionesController {
         return ResponseEntity.ok(sDirecciones.obtenerDireccionesUsuario(username)).getBody();
     }
 
-    /*@PostMapping("/createUpdate")
+    @PostMapping("/createUpdate")
     public DireccionCreateUpdateResponse crearEditarDireccion(@RequestBody DireccionCreateUpdateRequest request, HttpServletRequest requestIdUser){
         final String authHeader = requestIdUser.getHeader(HttpHeaders.AUTHORIZATION);
         String token = null;
@@ -41,8 +41,14 @@ public class DireccionesController {
         }
         JwtService jwtService = new JwtService();
         String username = jwtService.getUsernameFromToken(token);
+        logger.info("El usuario: "+username+" esta consumiendo /direcciones/createUpdate");
+        if (request.getId_direccion()==0){
+            logger.info("El usuario: "+username+" solicita grabar una nueva direccion");
+        } else {
+            logger.info("El usuario: "+username+" esta actualizando su id_direccion: "+request.getId_direccion());
+        }
         return ResponseEntity.ok(sDirecciones.createUpdateDireccion(request, username)).getBody();
-    }*/
+    }
 
     @GetMapping("/entidades")
     public List<EntidadesModel> obtenerEntidades(){

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DireccionCreateUpdateRequest {
+    private int id_direccion;
     private int entidad;
     private int municipio;
     private int localidad;
@@ -18,5 +19,5 @@ public class DireccionCreateUpdateRequest {
     private String interior;
     private String colonia;
     private String cp;
-    private boolean favorito;
+    private byte favorito;
 }
