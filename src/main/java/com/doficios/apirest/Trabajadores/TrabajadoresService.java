@@ -6,10 +6,8 @@ import com.doficios.apirest.Repositories.CalificacionesRepository;
 import com.doficios.apirest.Repositories.ServiciosRepository;
 import com.doficios.apirest.Repositories.TrabajadoresRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,9 +46,9 @@ public class TrabajadoresService {
         int serviciosFinalizados = serviciosRepo.countByUsuarioModelTrabajadorIdAndStatus((long) idUsuario,17);
         List<CalificacionesModel> calificaciones = calificacionesRepo.findById_usuario((long) idUsuario);
         int totalCalificaciones = calificaciones.size();
-        String descripcion = trabajador.getDescripcion() != null ? trabajador.getDescripcion() :"Sin Descripcion";
-        String experiencia = trabajador.getExperiencia() != null ? trabajador.getExperiencia() :"Sin Experiencia";
-        String tipoServicio ="Tipo de servicio no definido";
+        String descripcion = trabajador.getDescripcion() != null ? trabajador.getDescripcion() :"";
+        String experiencia = trabajador.getExperiencia() != null ? trabajador.getExperiencia() :"";
+        String tipoServicio ="";
         if (trabajador.getTipoServicioModel() != null) {
             tipoServicio = trabajador.getTipoServicioModel().getDescripcion();
         }
@@ -63,6 +61,13 @@ public class TrabajadoresService {
                 .fecha_registro(trabajador.getFecha_registro())
                 .servicios_finalizados(serviciosFinalizados)
                 .total_calificaciones(totalCalificaciones)
+                .build();
+    }
+
+    public TrabajadorPerfilRequest updatePerfilTrabajador(TrabajadorUpdatePerfilDTO request, int idUsuario){
+        trabajadoresRepo.updateTrabajador(idUsuario, request.getDescripcion(), request.getExperiencia(),request.getTipo_servicio());
+        return TrabajadorPerfilRequest.builder()
+                .id_trabajador(idUsuario)
                 .build();
     }
 

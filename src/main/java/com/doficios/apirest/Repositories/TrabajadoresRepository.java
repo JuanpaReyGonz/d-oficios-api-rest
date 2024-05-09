@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.print.Pageable;
 import java.util.List;
@@ -25,18 +26,17 @@ public interface TrabajadoresRepository extends JpaRepository<TrabajadoresModel,
             "ORDER BY t.reputacion DESC")
     List<TrabajadoresModel> findTop3TrabajadoresByTipoServicioIdAndNotInServiciosOrderByReputacionDesc(@Param("tipoServicioId") Integer tipoServicioId, @Param("fechaServicio") String fechaServicio);*/
 
+
     @Query("SELECT t FROM TrabajadoresModel t WHERE t.id_usuario = :idUsuario")
     TrabajadoresModel findTrabajadorByIdUsuario(int idUsuario);
 
+    @Transactional
     @Modifying
-    @Query("UPDATE TrabajadoresModel t SET t.descripcion = :descripcion, t.experiencia = :experiencia, t.tipo_servicio = :tipoServicio, " +
-            "t.clabe = :clabe, t.foto_trabajo = :fotoTrabajo WHERE t.id_usuario = :idUsuario")
+    @Query("UPDATE TrabajadoresModel t SET t.descripcion = :descripcion, t.experiencia = :experiencia, t.tipoServicioModel.id_tiposervicio = :tipoServicio " +
+            "WHERE t.id_usuario = :idUsuario")
     void updateTrabajador(@Param("idUsuario") int idUsuario,
                           @Param("descripcion") String descripcion,
                           @Param("experiencia") String experiencia,
-                          @Param("tipoServicio") int tipoServicio,
-                          @Param("clabe") String clabe,
-                          @Param("fotoTrabajo") String fotoTrabajo,
-                          @Param("codigoRegistro") String codigoRegistro);
+                          @Param("tipoServicio") int tipoServicio);
 
 }

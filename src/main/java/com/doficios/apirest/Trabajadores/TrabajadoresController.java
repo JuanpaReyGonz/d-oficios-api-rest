@@ -48,7 +48,19 @@ public class TrabajadoresController {
         }
     }
 
-    /*@PostMapping("/updatePerfil")
-    public ResponseEntity<>*/
+    @PostMapping("/updatePerfil")
+    public ResponseEntity<TrabajadorPerfilRequest> updatePerfilTrabajador(@RequestBody TrabajadorUpdatePerfilDTO request, HttpServletRequest requestUser){
+        final String authHeader = requestUser.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = null;
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+        JwtService jwtService = new JwtService();
+        String username = jwtService.getUsernameFromToken(token);
+        int usuario = usuarioRepo.findByCorreo(username);
+        logger.info("El trabajador: "+username+" esta consumiendo /trabajadores/updatePerfil");
+        logger.info("Actualizando la información del perfil de este trabajador");
+        return  ResponseEntity.ok(sTrabajadores.updatePerfilTrabajador(request, usuario));
+    }
 
 }

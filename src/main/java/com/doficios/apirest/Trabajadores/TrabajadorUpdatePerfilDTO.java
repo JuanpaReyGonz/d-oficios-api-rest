@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TrabajadorUpdatePerfilDTO {
-    private Long idUsuario;
     private String descripcion;
+    private String experiencia;
+    private int tipo_servicio;
 
 }
