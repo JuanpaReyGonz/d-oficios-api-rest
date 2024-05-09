@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class TrabajadorUpdatePerfilDTO {
     private String descripcion;
     private String experiencia;
-    private int tipo_servicio;
+    private int id_tipo_servicio;
 
 }

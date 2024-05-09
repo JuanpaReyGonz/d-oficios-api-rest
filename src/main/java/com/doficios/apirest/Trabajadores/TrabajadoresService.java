@@ -53,6 +53,7 @@ public class TrabajadoresService {
             tipoServicio = trabajador.getTipoServicioModel().getDescripcion();
         }
         return TrabajadorPerfilResponse.builder()
+                .id_trabajador(idUsuario)
                 .nombre(trabajador.getUsuarioModel().getNombre())
                 .descripcion(descripcion)
                 .experiencia(experiencia)
@@ -65,7 +66,7 @@ public class TrabajadoresService {
     }
 
     public TrabajadorPerfilRequest updatePerfilTrabajador(TrabajadorUpdatePerfilDTO request, int idUsuario){
-        trabajadoresRepo.updateTrabajador(idUsuario, request.getDescripcion(), request.getExperiencia(),request.getTipo_servicio());
+        trabajadoresRepo.updateTrabajador(idUsuario, request.getDescripcion(), request.getExperiencia(),request.getId_tipo_servicio());
         return TrabajadorPerfilRequest.builder()
                 .id_trabajador(idUsuario)
                 .build();

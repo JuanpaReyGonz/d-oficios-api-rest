@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TrabajadorPerfilResponse {
+    private int id_trabajador;
     private String nombre;
     private String descripcion;
     private String experiencia;

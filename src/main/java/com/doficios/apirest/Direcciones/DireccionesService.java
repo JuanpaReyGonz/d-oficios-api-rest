@@ -1,10 +1,14 @@
 package com.doficios.apirest.Direcciones;
 
 import com.doficios.apirest.Models.DireccionesModel;
+import com.doficios.apirest.Models.EntidadesModel;
+import com.doficios.apirest.Models.LocalidadesModel;
+import com.doficios.apirest.Models.MunicipiosModel;
 import com.doficios.apirest.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,5 +55,45 @@ public class DireccionesService {
             direccionesUsuarioDTOList.add(direccionesUsuarioDTO);
         }
         return direccionesUsuarioDTOList;
+    }
+
+    /*@Transactional
+    public DireccionCreateUpdateResponse createUpdateDireccion(@RequestBody DireccionCreateUpdateRequest request, String username){
+        Long usuario = (long) usuarioRepo.findByCorreo(username);
+        direccionesRepo.insertOrUpdateDireccion(usuario, request.get);
+        return DireccionCreateUpdateResponse.builder()
+                .id_direccion(1)
+                .build();
+    }*/
+
+    @Transactional(readOnly = true)
+    public List<EntidadesModel> obtenerEntidades(){
+        return (List<EntidadesModel>) entidadRepo.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<MunicipiosByEntidadResponse> obtenerMunicipios(int idEntidad){
+        List<MunicipiosModel> municipiosModel = municipioRepo.findAllByIdEntidad(idEntidad);
+        List<MunicipiosByEntidadResponse> municipiosResponseList = new ArrayList<>();
+        for (MunicipiosModel municipio : municipiosModel){
+            MunicipiosByEntidadResponse municipiosByEntidadResponse = new MunicipiosByEntidadResponse();
+            municipiosByEntidadResponse.setId_municipio(municipio.getId_municipio());
+            municipiosByEntidadResponse.setNombre(municipio.getNombre());
+            municipiosResponseList.add(municipiosByEntidadResponse);
+        }
+        return municipiosResponseList;
+    }
+
+
+    public List<LocalidadesByEntidadAndMunicipioResponse> obtenerLocalidades(int entidad, int municipio) {
+        List<LocalidadesModel> localidadesModel = localidadRepo.findAllByIdEntidadAndIdMunicipio(entidad,municipio);
+        List<LocalidadesByEntidadAndMunicipioResponse> localidadesList = new ArrayList<>();
+        for (LocalidadesModel localidad : localidadesModel){
+            LocalidadesByEntidadAndMunicipioResponse localidadesResponse = new LocalidadesByEntidadAndMunicipioResponse();
+            localidadesResponse.setId_localidad(localidad.getId_localidad());
+            localidadesResponse.setNombre(localidad.getNombre());
+            localidadesList.add(localidadesResponse);
+        }
+        return localidadesList;
     }
 }
