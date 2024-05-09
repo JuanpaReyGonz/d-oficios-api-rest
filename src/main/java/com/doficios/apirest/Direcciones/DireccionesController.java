@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +49,26 @@ public class DireccionesController {
             logger.info("El usuario: "+username+" esta actualizando su id_direccion: "+request.getId_direccion());
         }
         return ResponseEntity.ok(sDirecciones.createUpdateDireccion(request, username)).getBody();
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteDireccionUsuario(@RequestParam("id_direccion") int id_direccion, HttpServletRequest requestIdUser){
+        final String authHeader = requestIdUser.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = null;
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+        JwtService jwtService = new JwtService();
+        String username = jwtService.getUsernameFromToken(token);
+        logger.info("El usuario: "+username+" esta consumiendo /direcciones/delete");
+        boolean deleteDireccion = sDirecciones.borrarDireccionUsuario(id_direccion, username);
+        if (deleteDireccion) {
+            logger.info("Se elimino la direccion: "+id_direccion);
+            return ResponseEntity.ok().build(); // Devolver estado 200 OK
+        } else {
+            logger.info("Ocurrio un error al intentar eliminar la direccion: "+id_direccion+" del usuario: "+username);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Devolver un estado de error en caso de fallo
+        }
     }
 
     @GetMapping("/entidades")

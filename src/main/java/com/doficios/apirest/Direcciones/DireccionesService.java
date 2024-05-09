@@ -63,8 +63,8 @@ public class DireccionesService {
         int direccion;
         if (request.getId_direccion() == 0){
             //Si se recibe el parametro en 0 significa insertar una nueva direccion para el usuario.
-            //Se valida cuantas direcciones tiene el usuario registradas, y se agrega + 1 para pasar el siguiente id_direccion.
-            direccion = direccionesRepo.countDireccionesById_Usuario(usuario);
+            //Se valida el ultimo id de direcciones que tiene el usuario registradas, y se agrega + 1 para pasar el siguiente id_direccion.
+            direccion = direccionesRepo.findLastId_DireccionById_Usuario(usuario);
             direccion++;
         } else {
             //En caso contrario, almaceno el que definio el usuario, pues significa que quiere actualizarlo.
@@ -115,5 +115,15 @@ public class DireccionesService {
             localidadesList.add(localidadesResponse);
         }
         return localidadesList;
+    }
+
+    public boolean borrarDireccionUsuario(int idDireccion, String username) {
+        Long usuario = (long) usuarioRepo.findByCorreo(username);
+        if (idDireccion == 0){
+            return false;
+        } else {
+            int delete = direccionesRepo.deleteDireccionByIdUsuarioAndIdDireccion(usuario,idDireccion);
+            return delete > 0;
+        }
     }
 }

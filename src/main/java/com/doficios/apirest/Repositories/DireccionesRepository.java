@@ -17,8 +17,15 @@ public interface DireccionesRepository extends JpaRepository<DireccionesModel, D
     //@Query("SELECT d FROM DireccionesModel d JOIN FETCH d.entidadModel JOIN FETCH d.municipioModel JOIN FETCH d.localidadModel WHERE d.usuario = :usuario")
     List<DireccionesModel> findById_Usuario(Integer usuario);
 
-    @Query("SELECT COUNT(d) FROM DireccionesModel d WHERE d.usuarioModel.id_usuario = :usuario")
-    int countDireccionesById_Usuario(Long usuario);
+    //@Query("SELECT COUNT(d) FROM DireccionesModel d WHERE d.usuarioModel.id_usuario = :usuario")
+    //int countDireccionesById_Usuario(Long usuario);
+    @Query("SELECT d.id_direccion FROM DireccionesModel d WHERE d.usuarioModel.id_usuario = :usuario ORDER BY id_direccion DESC LIMIT 1")
+    int findLastId_DireccionById_Usuario(Long usuario);
+
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM DireccionesModel WHERE usuarioModel.id_usuario = :usuario AND id_direccion = :id_direccion")
+    int deleteDireccionByIdUsuarioAndIdDireccion(Long usuario, int id_direccion);
 
     //Insert y Update Direcciones
     @Transactional
