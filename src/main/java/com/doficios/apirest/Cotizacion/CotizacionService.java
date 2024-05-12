@@ -128,6 +128,13 @@ public class CotizacionService {
          Long idServicio = serviciosRepo.getLastInsertedId();
          System.out.println("Se inserto el servicio "+idServicio);
 
+        //Insertando en candidatos_servicio
+        for (TrabajadoresDisponiblesDTO trabajador: trabajadores) {
+            char status = (trabajador.getPrioridad() == 1) ? 'P' : 'N';
+            trabajadoresRepo.insertarCandidatoServicio(idServicio,trabajador.getId_trabajador(),status,trabajador.getPrioridad(),1);
+            System.out.println("Se inserto en candidatos_servicio");
+        }
+
         //Insertando en historial_status
         historialRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,idUsuario,1,fechaGrabadoServicio);
         historialRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,trabajadorSeleccionado,2,fechaGrabadoServicio);

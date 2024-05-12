@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class TrabajadorPerfilResponse {
     private int id_trabajador;
     private String nombre;
+    private String correo;
     private String descripcion;
     private String experiencia;
     private String tipo_servicio;

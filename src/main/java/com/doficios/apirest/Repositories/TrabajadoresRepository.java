@@ -39,4 +39,10 @@ public interface TrabajadoresRepository extends JpaRepository<TrabajadoresModel,
                           @Param("experiencia") String experiencia,
                           @Param("tipoServicio") int tipoServicio);
 
+    //Insertar en candidatos_servicio
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO candidatos_servicio (id_servicio, id_trabajador, status, prioridad, intento) " +
+            "VALUES (:idServicio, :idTrabajador, :status, :prioridad, :intento)", nativeQuery = true)
+    void insertarCandidatoServicio(Long idServicio, Long idTrabajador, char status, int prioridad, int intento);
 }

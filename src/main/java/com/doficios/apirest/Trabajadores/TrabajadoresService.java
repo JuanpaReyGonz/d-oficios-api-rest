@@ -5,6 +5,7 @@ import com.doficios.apirest.Models.TrabajadoresModel;
 import com.doficios.apirest.Repositories.CalificacionesRepository;
 import com.doficios.apirest.Repositories.ServiciosRepository;
 import com.doficios.apirest.Repositories.TrabajadoresRepository;
+import com.doficios.apirest.Repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,8 @@ public class TrabajadoresService {
     ServiciosRepository serviciosRepo;
     @Autowired
     CalificacionesRepository calificacionesRepo;
+    @Autowired
+    UsuarioRepository usuarioRepo;
 
     public List<TrabajadoresDisponiblesDTO> obtenerPerfilesTrabajador(){
 
@@ -52,9 +55,11 @@ public class TrabajadoresService {
         if (trabajador.getTipoServicioModel() != null) {
             tipoServicio = trabajador.getTipoServicioModel().getDescripcion();
         }
+        String correo = usuarioRepo.findMailByIdUsuario((long) idUsuario);
         return TrabajadorPerfilResponse.builder()
                 .id_trabajador(idUsuario)
                 .nombre(trabajador.getUsuarioModel().getNombre())
+                .correo(correo)
                 .descripcion(descripcion)
                 .experiencia(experiencia)
                 .tipo_servicio(tipoServicio)
