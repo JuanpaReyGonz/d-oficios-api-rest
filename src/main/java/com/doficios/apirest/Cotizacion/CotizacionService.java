@@ -74,6 +74,7 @@ public class CotizacionService {
             TrabajadoresDisponiblesDTO trabajadoresDisponiblesDTO = new TrabajadoresDisponiblesDTO();
             //trabajadoresDisponiblesDTO.setId_trabajador(trabajador.getId_usuario());
             trabajadoresDisponiblesDTO.setId_trabajador(trabajador.getUsuarioModel().getId());
+            trabajadoresDisponiblesDTO.setCorreo(trabajador.getUsuarioModel().getCorreo());
             trabajadoresDisponiblesDTO.setNombre(trabajador.getUsuarioModel().getNombre());
             trabajadoresDisponiblesDTO.setCalificacion(trabajador.getReputacion());
             //trabajadoresDisponiblesDTO.setServicios_finalizados(serviciosRepo.countByUsuarioModelTrabajadorIdAndStatus(trabajador.getId_usuario(),16));

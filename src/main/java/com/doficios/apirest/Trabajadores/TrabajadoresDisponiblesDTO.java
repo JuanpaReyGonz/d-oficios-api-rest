@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TrabajadoresDisponiblesDTO {
     private Long id_trabajador;
+    private String correo;
     private String nombre;
     private double calificacion;
     private Integer total_calificaciones;
