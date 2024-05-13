@@ -52,6 +52,11 @@ public interface ServiciosRepository extends JpaRepository<ServiciosModel,Long> 
 
     @Transactional
     @Modifying
+    @Query("UPDATE ServiciosModel u SET u.usuarioModelTrabajador.id_usuario = :trabajador WHERE u.id_servicio = :idServicio")
+    void actualizaTrabajadorServicio(Long trabajador, Long idServicio);
+
+    @Transactional
+    @Modifying
     @Query("UPDATE ServiciosModel u SET calificacion = :calificacion, comentario = :comentario WHERE u.id_servicio = :idServicio")
     void actualizaCalificacionServicioByIdServicio(Integer calificacion, String comentario, Long idServicio);
 }
