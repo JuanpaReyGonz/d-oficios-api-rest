@@ -20,7 +20,7 @@ public interface DireccionesRepository extends JpaRepository<DireccionesModel, D
     //@Query("SELECT COUNT(d) FROM DireccionesModel d WHERE d.usuarioModel.id_usuario = :usuario")
     //int countDireccionesById_Usuario(Long usuario);
     @Query("SELECT d.id_direccion FROM DireccionesModel d WHERE d.usuarioModel.id_usuario = :usuario ORDER BY id_direccion DESC LIMIT 1")
-    int findLastId_DireccionById_Usuario(Long usuario);
+    Integer findLastId_DireccionById_Usuario(Long usuario);
 
     @Transactional
     @Modifying

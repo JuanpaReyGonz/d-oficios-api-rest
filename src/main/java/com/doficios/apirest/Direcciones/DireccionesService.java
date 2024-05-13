@@ -60,11 +60,15 @@ public class DireccionesService {
     @Transactional
     public DireccionCreateUpdateResponse createUpdateDireccion(@RequestBody DireccionCreateUpdateRequest request, String username){
         Long usuario = (long) usuarioRepo.findByCorreo(username);
-        int direccion;
+        Integer direccion;
         if (request.getId_direccion() == 0){
             //Si se recibe el parametro en 0 significa insertar una nueva direccion para el usuario.
             //Se valida el ultimo id de direcciones que tiene el usuario registradas, y se agrega + 1 para pasar el siguiente id_direccion.
             direccion = direccionesRepo.findLastId_DireccionById_Usuario(usuario);
+            if (direccion == null) {
+                // Si es null, asignar un cero
+                direccion = 0;
+            }
             direccion++;
         } else {
             //En caso contrario, almaceno el que definio el usuario, pues significa que quiere actualizarlo.
