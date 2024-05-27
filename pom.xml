@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.d-oficios</groupId>
 	<artifactId>api-rest</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>v240526.2100</version>
 	<packaging>jar</packaging>
 	<name>api-rest</name>
 	<description>API de comunicación con AppMóvil d-oficios</description>
