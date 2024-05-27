@@ -34,6 +34,8 @@ public class ServiciosService {
     LocalidadRepository localidadRepo;
     @Autowired
     UsuarioRepository usuarioRepo;
+    @Autowired
+    TrabajadoresRepository trabajadoresRepo;
 
     public List<TarjetasSolicitudesClienteDTO> obtenerTarjetasSolicitudesCliente(String username) {
         DecimalFormat df = new DecimalFormat("0.00"); //Formatear importe siempre a 2 decimales.
@@ -77,7 +79,19 @@ public class ServiciosService {
         ServiciosModel servicioGenerales = serviciosRepo.findById_servicio(idServicio);
 
         //Obtener el ID cliente y ID trabajador
-        Long idTrabajador = servicioGenerales.getUsuarioModelTrabajador().getId();
+        Long idTrabajador;
+        String nombreTrabajador;
+        double promedioEstrellasTrabajador=0;
+        try {
+            idTrabajador = servicioGenerales.getUsuarioModelTrabajador().getId();
+            nombreTrabajador = servicioGenerales.getUsuarioModelTrabajador().getNombre();
+            promedioEstrellasTrabajador=trabajadoresRepo.findTrabajadorByIdUsuario(Math.toIntExact(idTrabajador)).getReputacion();
+            //System.out.println("Promedio de estrellas del trabajador: "+promedioEstrellasTrabajador);
+        } catch (NullPointerException ex) {
+            idTrabajador = 0L;
+            nombreTrabajador = "";
+        }
+
         Long idCliente = servicioGenerales.getUsuarioModel().getId();
 
         List<TareasPorServicioModel> tareasServicio = tareasRepo.findByIdServicio(idServicio);
@@ -110,17 +124,17 @@ public class ServiciosService {
         }
         //Obteniendo histórico de cliente
         int totalCalificacionesCliente = calificacionesHistoricoCliente.size();
+        //System.out.println("Total de calificaciones del cliente: "+totalCalificacionesCliente);
         double sumaCalificacionesHistoricoCliente=0;
         for (CalificacionesModel calificacion : calificacionesHistoricoCliente){
             sumaCalificacionesHistoricoCliente+=calificacion.getCalificacion();
         }
+        double promedioEstrellasCliente = Math.round((sumaCalificacionesHistoricoCliente/totalCalificacionesCliente)*10.0)/10.0;
+        //System.out.println("Promedio de calificaciones del cliente: " + promedioEstrellasCliente);
 
         //Obteniendo histórico de trabajador
         int totalCalificaciones = calificaciones.size();
-        double sumaCalificaciones=0;
-        for (CalificacionesModel calificacion : calificaciones){
-            sumaCalificaciones+=calificacion.getCalificacion();
-            }
+        //System.out.println("Total de calificaciones del trabajador: "+totalCalificaciones);
         List<SubServiciosListaDTO> subServiciosLista = new ArrayList<>();
 
         for (TareasPorServicioModel tarea: tareasServicio){
@@ -162,8 +176,8 @@ public class ServiciosService {
                 .lugar_servicio(lugarServicio)
                 .total(new BigDecimal(totalFormateado))
                 .comision(new BigDecimal(comisionFormateado))
-                .nombre_trabajador(servicioGenerales.getUsuarioModelTrabajador().getNombre())
-                .promedio_estrellas(sumaCalificaciones/totalCalificaciones)
+                .nombre_trabajador(nombreTrabajador)
+                .promedio_estrellas(promedioEstrellasTrabajador)
                 .total_calificaciones(totalCalificaciones)
                 .calificacion_servicio(calificacionServicio)
                 .comentario_servicio(servicioGenerales.getComentario())
@@ -177,7 +191,8 @@ public class ServiciosService {
                 .calificacion_cliente(calificacionCliente)
                 .comentario_cliente(calificacionComentarioCliente)
                 .total_calificaciones_cliente(totalCalificacionesCliente)
-                .promedio_estrellas_cliente(sumaCalificacionesHistoricoCliente/totalCalificacionesCliente)
+                //.promedio_estrellas_cliente(sumaCalificacionesHistoricoCliente/totalCalificacionesCliente)
+                .promedio_estrellas_cliente(promedioEstrellasCliente)
                 .servicios_finalizados_cliente(serviciosRepo.countByUsuarioModelIdAndStatus(idCliente,17))
                 .subservicios_lista(subServiciosLista)
                 .status_historico(statusHistoricoLista)

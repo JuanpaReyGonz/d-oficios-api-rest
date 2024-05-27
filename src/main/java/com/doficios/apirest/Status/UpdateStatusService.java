@@ -48,7 +48,7 @@ public class UpdateStatusService {
         } else if (status == 6) {
             historialStatusRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,cliente,6,fechaActual);
             historialStatusRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,cliente,7,fechaActual.plusSeconds(1));
-            historialStatusRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,cliente,8,fechaActual.plusSeconds(1));
+            historialStatusRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,cliente,8,fechaActual.plusSeconds(2));
             historialStatusRepo.insertHistorialStatusByIdServicioAndIdUsuarioAndIdStatus(idServicio,trabajador,8,fechaActual);
             serviciosRepo.actualizaStatusServicio(idServicio,8);
         } else if (status == 11) {
@@ -81,6 +81,8 @@ public class UpdateStatusService {
                     candidatoServicioRepo.actualizaStatusCandidatoByIdServicioAndIdTrabajador('R',idServicio,trabajador,prioridadCandidato);
                     serviciosRepo.actualizaStatusServicio(idServicio,19);
                     tareasRepo.actualizaStatusTareas(idServicio,4);
+                    System.out.println("Limpiando de servicio el registro del usuario");
+                    serviciosRepo.actualizaTrabajadorServicio(null,idServicio);
                 } else{
                     //Si no, solamente actualizar estatus.
                     System.out.println("Cancelo el candidato del servicio "+idServicio+" de estatus: "+prioridadCandidato);

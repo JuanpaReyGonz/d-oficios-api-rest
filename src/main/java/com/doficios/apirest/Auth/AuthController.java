@@ -19,14 +19,17 @@ public class AuthController {
     //private final User user;
 
     @PostMapping(value = "login")
-    //public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request)
-    public ResponseEntity<?> login(@RequestBody LoginRequest request)
-    {
-        if(authService.findByMail(request.getCorreo()).isEmpty())
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        /*if(authService.findByMail(request.getCorreo()).isEmpty())
         {
             return ResponseEntity.badRequest().body(Collections.singletonMap("ERROR","Email es incorrecto."));
         }
-        return ResponseEntity.ok(authService.login(request));
+        return ResponseEntity.ok(authService.login(request));*/
+        try {
+            return ResponseEntity.ok(authService.login(request));
+        } catch (Exception ex){
+            return ResponseEntity.badRequest().body(Collections.singletonMap("ERROR","Credenciales inválidas"));
+        }
     }
 
     @PostMapping(value = "register")

@@ -5,6 +5,7 @@ import com.doficios.apirest.User.User;
 import com.doficios.apirest.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,17 +22,15 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse login(LoginRequest request) {
-        //authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getCorreo(), request.getPassword()));
-        //UserDetails user=userRepository.findByUsername(request.getUsername()).orElseThrow();
-        User user=userRepository.findByCorreo(request.getCorreo()).orElseThrow();
-        String token=jwtService.getToken(user);
-        return AuthResponse.builder()
-                .nombre(user.getNombre())
-                .correo(user.getUsername())
-                .tipoUsuario(user.getTipoUsuario())
-                .token(token)
-                .build();
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getCorreo(), request.getPassword()));
+            User user=userRepository.findByCorreo(request.getCorreo()).orElseThrow();
+            String token=jwtService.getToken(user);
+            return AuthResponse.builder()
+                    .nombre(user.getNombre())
+                    .correo(user.getUsername())
+                    .tipoUsuario(user.getTipoUsuario())
+                    .token(token)
+                    .build();
     }
 
     public AuthResponse register(RegisterRequest request) {

@@ -29,6 +29,7 @@ public interface ServiciosRepository extends JpaRepository<ServiciosModel,Long> 
                                                  @Param("status") Integer status);
 
     List<ServiciosModel> findByUsuarioModelCorreo(String correo);
+    @Query("SELECT s FROM ServiciosModel s WHERE s.usuarioModelTrabajador.correo = :correo AND s.statusModel.status != 19")
     List<ServiciosModel> findByUsuarioModelTrabajadorCorreo(String correo);
     @Query("SELECT s FROM ServiciosModel s WHERE s.id_servicio = :id_servicio")
     ServiciosModel findById_servicio(Integer id_servicio);

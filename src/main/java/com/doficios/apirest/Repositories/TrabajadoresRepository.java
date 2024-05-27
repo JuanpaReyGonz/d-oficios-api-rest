@@ -17,7 +17,7 @@ public interface TrabajadoresRepository extends JpaRepository<TrabajadoresModel,
 
     @Query("SELECT t FROM TrabajadoresModel t WHERE t.tipoServicioModel.id_tiposervicio = :tipoServicioId AND t.id_usuario " +
             "NOT IN (SELECT s.usuarioModelTrabajador.id_usuario FROM ServiciosModel s WHERE s.fecha_servicio = :fechaServicio" +
-            " AND s.statusModel.status != 19 ) ORDER BY t.reputacion DESC LIMIT 3")
+            " AND s.statusModel.status NOT IN (17,19) ) ORDER BY t.reputacion DESC LIMIT 3")
     List<TrabajadoresModel> findFirst3TrabajadoresByTipoServicio(@Param("tipoServicioId") Integer tipoServicioId, @Param("fechaServicio") String fechaServicio);
 
     /*@Query("SELECT t.id_usuario FROM TrabajadoresModel t " +
