@@ -8,10 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/reportes")
@@ -32,4 +31,19 @@ public class BuzonReportesController {
         logger.info("Se esta grabando un nuevo registro en buzon general por el usuario: "+username);
         return ResponseEntity.ok(sbuzonReporte.insertBuzonGeneral(request,username));
     }
+
+    @GetMapping()
+    public ResponseEntity<List<BuzonGeneralGetAllResponse>> obtenerReportes(HttpServletRequest request) {
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = null;
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+        JwtService jwtService = new JwtService();
+        String username = jwtService.getUsernameFromToken(token);
+        logger.info("TOKEN VALIDO. EL usuario: "+username+" está consumiendo: /reportes del Buzón General.");
+        List<BuzonGeneralGetAllResponse> obtenerTodosReportes = sbuzonReporte.obtenerReportes(username);
+        return ResponseEntity.ok(obtenerTodosReportes);
+    }
+
 }
